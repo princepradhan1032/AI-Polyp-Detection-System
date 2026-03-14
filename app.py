@@ -1330,7 +1330,7 @@ if not os.path.isdir(LOGS_FOLDER):
 # ----------------- Load Model -----------------
 MODEL_PATH = os.path.join("projects", "model5.h5")
 # Use compile=False if custom metrics are not needed
-model = load_model(MODEL_PATH, compile=False)
+model = load_model(MODEL_PATH, compile=False, safe_mode=False)
 
 # ----------------- Utility Functions -----------------
 def convert_to_png(src_path, dest_folder):
