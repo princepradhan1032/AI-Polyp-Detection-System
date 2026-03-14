@@ -9,13 +9,11 @@ from PIL import Image
 
 app = Flask(__name__)
 
-# --- Folders (Render Compatibility) ---
 UPLOAD_FOLDER = "/tmp/uploads"
 LOGS_FOLDER = "/tmp/logs"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(LOGS_FOLDER, exist_ok=True)
 
-# --- File Serving Routes ---
 @app.route('/static/uploads/<filename>')
 def serve_uploads(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
@@ -24,9 +22,7 @@ def serve_uploads(filename):
 def serve_logs(filename):
     return send_from_directory(LOGS_FOLDER, filename)
 
-# --- Safe image reader (handles TIF, BMP, etc. that cv2 may fail on) ---
 def safe_imread(path):
-    """Try cv2 first; fall back to Pillow for formats like TIFF."""
     img = cv2.imread(path)
     if img is not None:
         return img
@@ -36,30 +32,29 @@ def safe_imread(path):
     except Exception as e:
         raise ValueError(f"Could not read image '{path}': {e}")
 
-# --- Universal Model Loader ---
-# FIX 1: key must be 'InputLayer' — that is the class name stored in the .h5 config
-# FIX 2: convert batch_shape → input_shape (TF 2.15 InputLayer rejects batch_shape)
-class CompatibleInputLayer(tf.keras.layers.InputLayer):
-    def __init__(self, *args, **kwargs):
-        if 'batch_shape' in kwargs:
-            kwargs['input_shape'] = kwargs.pop('batch_shape')[1:]
-        super().__init__(*args, **kwargs)
+# --- THE REAL FIX: Monkey-patch InputLayer before loading ---
+# custom_objects is ignored for built-in layers during deserialization.
+# Patching the class directly intercepts TF's own internal lookup.
+_original_input_layer_init = tf.keras.layers.InputLayer.__init__
+
+def _patched_input_layer_init(self, *args, **kwargs):
+    if 'batch_shape' in kwargs:
+        batch_shape = kwargs.pop('batch_shape')
+        kwargs['input_shape'] = batch_shape[1:]
+    _original_input_layer_init(self, *args, **kwargs)
+
+tf.keras.layers.InputLayer.__init__ = _patched_input_layer_init
 
 MODEL_PATH = os.path.join("projects", "model5.h5") if os.path.exists("projects/model5.h5") else "model5.h5"
 
 try:
     print(f"DEBUG: Attempting load from {MODEL_PATH}")
-    model = tf.keras.models.load_model(
-        MODEL_PATH,
-        compile=False,
-        custom_objects={'InputLayer': CompatibleInputLayer}  # key matches class name in .h5
-    )
+    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
     print("DEBUG: Model loaded successfully!")
 except Exception as e:
     print(f"CRITICAL ERROR: {e}")
     model = None
 
-# --- Prediction Logic ---
 def predict_polyp_risk(img_path):
     if model is None:
         raise ValueError("AI Model failed to load. Check server startup logs.")
@@ -93,7 +88,6 @@ def predict_polyp_risk(img_path):
     cv2.imwrite(os.path.join(LOGS_FOLDER, out_name), output_img)
     return chance, size, risk, out_name
 
-# --- Routes ---
 @app.route("/", methods=["GET", "POST"])
 def home():
     res, up_img, proc_img, data = None, None, None, None
@@ -106,7 +100,6 @@ def home():
                 orig_path = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(orig_path)
 
-                # Convert to PNG using safe reader (handles TIF, BMP, etc.)
                 base_name = os.path.splitext(filename)[0]
                 png_path = os.path.join(UPLOAD_FOLDER, base_name + ".png")
                 img_data = safe_imread(orig_path)
