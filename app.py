@@ -1,5 +1,7 @@
 import os
+import json
 import cv2
+import h5py
 import numpy as np
 import tensorflow as tf
 from flask import Flask, request, render_template, url_for, send_from_directory
@@ -32,28 +34,82 @@ def safe_imread(path):
     except Exception as e:
         raise ValueError(f"Could not read image '{path}': {e}")
 
-# --- THE REAL FIX: Monkey-patch InputLayer before loading ---
-# custom_objects is ignored for built-in layers during deserialization.
-# Patching the class directly intercepts TF's own internal lookup.
-_original_input_layer_init = tf.keras.layers.InputLayer.__init__
+# ---------------------------------------------------------------------------
+# Deep-patch the model config JSON to make a Keras-3-saved model load in
+# TF 2.15 (Keras 2). Two classes of problems are fixed recursively:
+#
+#   1. DTypePolicy  – Keras 3 stores dtype as:
+#        {"module":"keras","class_name":"DTypePolicy","config":{"name":"float32"}}
+#      Keras 2 expects just the string "float32".
+#
+#   2. batch_shape  – Keras 3 InputLayer uses "batch_shape"; Keras 2 uses
+#      "batch_input_shape".
+# ---------------------------------------------------------------------------
+def _fix_config(obj):
+    if isinstance(obj, dict):
+        # Unwrap DTypePolicy → plain string
+        if obj.get("class_name") == "DTypePolicy" and "config" in obj:
+            return obj["config"].get("name", "float32")
 
-def _patched_input_layer_init(self, *args, **kwargs):
-    if 'batch_shape' in kwargs:
-        batch_shape = kwargs.pop('batch_shape')
-        kwargs['input_shape'] = batch_shape[1:]
-    _original_input_layer_init(self, *args, **kwargs)
+        # Fix InputLayer batch_shape key
+        if obj.get("class_name") == "InputLayer" and "config" in obj:
+            cfg = obj["config"]
+            if "batch_shape" in cfg:
+                cfg["batch_input_shape"] = cfg.pop("batch_shape")
 
-tf.keras.layers.InputLayer.__init__ = _patched_input_layer_init
+        return {k: _fix_config(v) for k, v in obj.items()}
 
-MODEL_PATH = os.path.join("projects", "model5.h5") if os.path.exists("projects/model5.h5") else "model5.h5"
+    if isinstance(obj, list):
+        return [_fix_config(i) for i in obj]
+
+    return obj
+
+
+def load_model_keras3_compat(h5_path):
+    """
+    Load a .h5 saved with Keras 3 into TF 2.15 (Keras 2) by:
+      1. Reading the raw model_config JSON from the HDF5 attrs.
+      2. Patching DTypePolicy and batch_shape issues.
+      3. Rebuilding the model architecture from the fixed JSON.
+      4. Loading the weights directly via h5py layer-by-layer.
+    """
+    with h5py.File(h5_path, "r") as f:
+        raw_cfg = f.attrs.get("model_config")
+        if raw_cfg is None:
+            raise ValueError("No 'model_config' found in HDF5 file.")
+        if isinstance(raw_cfg, bytes):
+            raw_cfg = raw_cfg.decode("utf-8")
+
+        config = json.loads(raw_cfg)
+        print("DEBUG: Original model class_name =", config.get("class_name"))
+
+    fixed_config = _fix_config(config)
+    fixed_json = json.dumps(fixed_config)
+
+    print("DEBUG: Rebuilding model from patched config...")
+    model = tf.keras.models.model_from_json(fixed_json)
+    print("DEBUG: Architecture rebuilt. Loading weights...")
+
+    model.load_weights(h5_path)
+    print("DEBUG: Weights loaded successfully!")
+    return model
+
+
+MODEL_PATH = (
+    os.path.join("projects", "model5.h5")
+    if os.path.exists("projects/model5.h5")
+    else "model5.h5"
+)
 
 try:
     print(f"DEBUG: Attempting load from {MODEL_PATH}")
-    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
+    model = load_model_keras3_compat(MODEL_PATH)
     print("DEBUG: Model loaded successfully!")
 except Exception as e:
     print(f"CRITICAL ERROR: {e}")
+    import traceback; traceback.print_exc()
     model = None
+
 
 def predict_polyp_risk(img_path):
     if model is None:
@@ -87,6 +143,7 @@ def predict_polyp_risk(img_path):
     out_name = f"Analyzed_{os.path.splitext(os.path.basename(img_path))[0]}.png"
     cv2.imwrite(os.path.join(LOGS_FOLDER, out_name), output_img)
     return chance, size, risk, out_name
+
 
 @app.route("/", methods=["GET", "POST"])
 def home():
