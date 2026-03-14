@@ -3,14 +3,12 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from flask import Flask, request, render_template, url_for, send_from_directory
-from keras.models import load_model
 from werkzeug.utils import secure_filename
 import math
 from PIL import Image
 
 app = Flask(__name__)
 
-# --- Render needs /tmp for writes; serve files via custom routes ---
 UPLOAD_FOLDER = "/tmp/uploads"
 LOGS_FOLDER   = "/tmp/logs"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -24,34 +22,45 @@ def serve_uploads(filename):
 def serve_logs(filename):
     return send_from_directory(LOGS_FOLDER, filename)
 
-# --- Load model exactly like your working local code ---
-MODEL_PATH = os.path.join("projects", "model5.h5")
-print(f"DEBUG: Loading model from {MODEL_PATH}")
-model = load_model(MODEL_PATH, compile=False)
-print("DEBUG: Model loaded successfully!")
+# ── Suppress TF logs to save memory/startup time ──
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"]  = "-1"   # force CPU, skip GPU probe
 
-# --- Helpers ---
+model      = None
+load_error = None
+
+def get_model():
+    """Lazy-load: only load the model on first real request."""
+    global model, load_error
+    if model is not None:
+        return model
+    if load_error is not None:
+        raise RuntimeError(load_error)
+    try:
+        model_path = os.path.join("projects", "model5.h5")
+        print(f"DEBUG: Loading model from {model_path} ...")
+        model = tf.keras.models.load_model(model_path, compile=False)
+        print("DEBUG: Model loaded successfully!")
+        return model
+    except Exception as e:
+        load_error = str(e)
+        print(f"CRITICAL: Model load failed: {e}")
+        raise
+
 def safe_imread(path):
     img = cv2.imread(path)
     if img is not None:
         return img
-    # Fallback for TIFF and other formats cv2 may miss
     pil = Image.open(path).convert("RGB")
     return cv2.cvtColor(np.array(pil), cv2.COLOR_RGB2BGR)
 
-def convert_to_png(src_path):
-    img = safe_imread(src_path)
-    base = os.path.splitext(os.path.basename(src_path))[0]
-    dest = os.path.join(UPLOAD_FOLDER, base + ".png")
-    cv2.imwrite(dest, img)
-    return dest
-
 def predict_polyp_risk(png_path):
-    image = safe_imread(png_path)
-    resized  = cv2.resize(image, (256, 256))
-    norm     = resized / 255.0
+    m = get_model()
+    image   = safe_imread(png_path)
+    resized = cv2.resize(image, (256, 256))
+    norm    = resized / 255.0
 
-    prob_map = model.predict(np.expand_dims(norm, axis=0))[0]
+    prob_map = m.predict(np.expand_dims(norm, axis=0))[0]
     if prob_map.ndim == 3 and prob_map.shape[-1] == 1:
         prob_map = prob_map[..., 0]
 
@@ -76,7 +85,6 @@ def predict_polyp_risk(png_path):
     cv2.imwrite(os.path.join(LOGS_FOLDER, out_name), output)
     return chance, size, risk, out_name
 
-# --- Route ---
 @app.route("/", methods=["GET", "POST"])
 def home():
     result, uploaded_image, processed_image, result_data = None, None, None, None
@@ -93,9 +101,13 @@ def home():
                 orig_path = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(orig_path)
 
-                png_path = convert_to_png(orig_path)
-                png_name = os.path.basename(png_path)
-                uploaded_image = url_for("serve_uploads", filename=png_name)
+                # Convert to PNG
+                img_data = safe_imread(orig_path)
+                base_name = os.path.splitext(filename)[0]
+                png_path  = os.path.join(UPLOAD_FOLDER, base_name + ".png")
+                cv2.imwrite(png_path, img_data)
+
+                uploaded_image = url_for("serve_uploads", filename=base_name + ".png")
 
                 try:
                     chance, size, risk, out_name = predict_polyp_risk(png_path)
@@ -108,11 +120,6 @@ def home():
                     result = "Prediction completed successfully ✅"
                 except Exception as e:
                     result = f"Error processing image: {str(e)}"
-
-    print("DEBUG => result:",         result)
-    print("DEBUG => result_data:",    result_data)
-    print("DEBUG => uploaded_image:", uploaded_image)
-    print("DEBUG => processed_image:",processed_image)
 
     return render_template(
         "results.html",
