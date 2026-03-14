@@ -3,16 +3,18 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from flask import Flask, request, render_template, url_for, send_from_directory
+from keras.models import load_model
 from werkzeug.utils import secure_filename
 import math
 from PIL import Image
 
 app = Flask(__name__)
 
+# --- Render needs /tmp for writes; serve files via custom routes ---
 UPLOAD_FOLDER = "/tmp/uploads"
-LOGS_FOLDER = "/tmp/logs"
+LOGS_FOLDER   = "/tmp/logs"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(LOGS_FOLDER, exist_ok=True)
+os.makedirs(LOGS_FOLDER,   exist_ok=True)
 
 @app.route('/static/uploads/<filename>')
 def serve_uploads(filename):
@@ -22,105 +24,102 @@ def serve_uploads(filename):
 def serve_logs(filename):
     return send_from_directory(LOGS_FOLDER, filename)
 
+# --- Load model exactly like your working local code ---
+MODEL_PATH = os.path.join("projects", "model5.h5")
+print(f"DEBUG: Loading model from {MODEL_PATH}")
+model = load_model(MODEL_PATH, compile=False)
+print("DEBUG: Model loaded successfully!")
+
+# --- Helpers ---
 def safe_imread(path):
     img = cv2.imread(path)
     if img is not None:
         return img
-    try:
-        pil_img = Image.open(path).convert("RGB")
-        return cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
-    except Exception as e:
-        raise ValueError(f"Could not read image '{path}': {e}")
+    # Fallback for TIFF and other formats cv2 may miss
+    pil = Image.open(path).convert("RGB")
+    return cv2.cvtColor(np.array(pil), cv2.COLOR_RGB2BGR)
 
-MODEL_PATH = (
-    os.path.join("projects", "model5.h5")
-    if os.path.exists("projects/model5.h5")
-    else "model5.h5"
-)
+def convert_to_png(src_path):
+    img = safe_imread(src_path)
+    base = os.path.splitext(os.path.basename(src_path))[0]
+    dest = os.path.join(UPLOAD_FOLDER, base + ".png")
+    cv2.imwrite(dest, img)
+    return dest
 
-try:
-    print(f"DEBUG: TF version = {tf.__version__}")
-    print(f"DEBUG: Keras version = {tf.keras.__version__}")
-    print(f"DEBUG: Attempting load from {MODEL_PATH}")
-    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
-    print("DEBUG: Model loaded successfully!")
-except Exception as e:
-    print(f"CRITICAL ERROR: {e}")
-    import traceback; traceback.print_exc()
-    model = None
+def predict_polyp_risk(png_path):
+    image = safe_imread(png_path)
+    resized  = cv2.resize(image, (256, 256))
+    norm     = resized / 255.0
 
+    prob_map = model.predict(np.expand_dims(norm, axis=0))[0]
+    if prob_map.ndim == 3 and prob_map.shape[-1] == 1:
+        prob_map = prob_map[..., 0]
 
-def predict_polyp_risk(img_path):
-    if model is None:
-        raise ValueError("AI Model failed to load. Check server startup logs.")
-
-    img = safe_imread(img_path)
-    resized = cv2.resize(img, (256, 256))
-    normalized = resized / 255.0
-
-    preds = model.predict(np.expand_dims(normalized, axis=0))[0]
-    if preds.ndim == 3:
-        preds = preds[..., 0]
-
-    mask = (preds > 0.5).astype(np.uint8)
-    output_img = resized.copy()
+    mask = (prob_map > 0.5).astype(np.uint8)
+    output = resized.copy()
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     px_to_mm = 0.2
-    lengths = []
+    lengths  = []
     for c in contours:
         if cv2.contourArea(c) > 20:
-            cv2.drawContours(output_img, [c], -1, (0, 255, 0), 2)
+            cv2.drawContours(output, [c], -1, (0, 255, 0), 2)
             area_mm2 = cv2.contourArea(c) * (px_to_mm ** 2)
             lengths.append(2 * math.sqrt(area_mm2 / math.pi))
 
-    chance = float(preds[mask == 1].mean()) * 100 if mask.sum() > 0 else 0.0
-    size = max(lengths) if lengths else 0.0
+    chance = float(prob_map[mask == 1].mean()) * 100 if mask.sum() > 0 else 0.0
+    size   = max(lengths) if lengths else 0.0
     base_risk = 0.6 if size <= 5 else (2.1 if size <= 9 else 13.4)
-    risk = (chance / 100) * base_risk
+    risk   = (chance / 100) * base_risk
 
-    out_name = f"Analyzed_{os.path.splitext(os.path.basename(img_path))[0]}.png"
-    cv2.imwrite(os.path.join(LOGS_FOLDER, out_name), output_img)
+    out_name = f"Predicted_{os.path.splitext(os.path.basename(png_path))[0]}.png"
+    cv2.imwrite(os.path.join(LOGS_FOLDER, out_name), output)
     return chance, size, risk, out_name
 
-
+# --- Route ---
 @app.route("/", methods=["GET", "POST"])
 def home():
-    res, up_img, proc_img, data = None, None, None, None
+    result, uploaded_image, processed_image, result_data = None, None, None, None
 
-    if request.method == "POST" and "file" in request.files:
-        file = request.files["file"]
-        if file.filename:
-            try:
-                filename = secure_filename(file.filename)
+    if request.method == "POST":
+        if "file" not in request.files:
+            result = "No file part in the request."
+        else:
+            file = request.files["file"]
+            if file.filename == "":
+                result = "No file selected."
+            else:
+                filename  = secure_filename(file.filename)
                 orig_path = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(orig_path)
 
-                base_name = os.path.splitext(filename)[0]
-                png_path = os.path.join(UPLOAD_FOLDER, base_name + ".png")
-                img_data = safe_imread(orig_path)
-                if not cv2.imwrite(png_path, img_data):
-                    raise ValueError("Failed to save converted PNG.")
+                png_path = convert_to_png(orig_path)
+                png_name = os.path.basename(png_path)
+                uploaded_image = url_for("serve_uploads", filename=png_name)
 
-                up_img = url_for("serve_uploads", filename=base_name + ".png")
-                c, s, r, out = predict_polyp_risk(png_path)
-                proc_img = url_for("serve_logs", filename=out)
+                try:
+                    chance, size, risk, out_name = predict_polyp_risk(png_path)
+                    processed_image = url_for("serve_logs", filename=out_name)
+                    result_data = {
+                        "polyp_chance":    f"{chance:.2f}",
+                        "polyp_length_mm": f"{size:.2f}",
+                        "cancer_risk":     f"{risk:.2f}",
+                    }
+                    result = "Prediction completed successfully ✅"
+                except Exception as e:
+                    result = f"Error processing image: {str(e)}"
 
-                data = {
-                    "polyp_chance": f"{c:.2f}",
-                    "polyp_length_mm": f"{s:.2f}",
-                    "cancer_risk": f"{r:.2f}"
-                }
-                res = "Analysis Completed Successfully ✅"
-            except Exception as e:
-                res = f"Error: {str(e)}"
+    print("DEBUG => result:",         result)
+    print("DEBUG => result_data:",    result_data)
+    print("DEBUG => uploaded_image:", uploaded_image)
+    print("DEBUG => processed_image:",processed_image)
 
     return render_template(
         "results.html",
-        result=res,
-        uploaded_image=up_img,
-        processed_image=proc_img,
-        result_data=data
+        result=result,
+        uploaded_image=uploaded_image,
+        processed_image=processed_image,
+        result_data=result_data,
     )
 
 if __name__ == "__main__":
