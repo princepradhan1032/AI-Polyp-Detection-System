@@ -1323,10 +1323,10 @@ UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads")
 LOGS_FOLDER = os.path.join(app.root_path, "static", "logs")
 
 if not os.path.isdir(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+   os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 if not os.path.isdir(LOGS_FOLDER):
-    os.makedirs(LOGS_FOLDER)
+    os.makedirs(LOGS_FOLDER, exist_ok=True)
 # ----------------- Load Model -----------------
 MODEL_PATH = os.path.join("projects", "model5.h5")
 # Use compile=False if custom metrics are not needed
