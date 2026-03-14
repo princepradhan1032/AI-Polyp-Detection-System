@@ -1311,7 +1311,7 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from flask import Flask, request, render_template, url_for
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from werkzeug.utils import secure_filename
 import math
 import time  # <--- NEW IMPORT
@@ -1330,7 +1330,9 @@ if not os.path.isdir(LOGS_FOLDER):
 # ----------------- Load Model -----------------
 MODEL_PATH = os.path.join("projects", "model5.h5")
 # Use compile=False if custom metrics are not needed
-model = load_model(MODEL_PATH, compile=False, safe_mode=False)
+import tensorflow as tf
+
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 
 # ----------------- Utility Functions -----------------
 def convert_to_png(src_path, dest_folder):
