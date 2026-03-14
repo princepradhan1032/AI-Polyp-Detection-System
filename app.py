@@ -1,7 +1,5 @@
 import os
-import json
 import cv2
-import h5py
 import numpy as np
 import tensorflow as tf
 from flask import Flask, request, render_template, url_for, send_from_directory
@@ -34,67 +32,6 @@ def safe_imread(path):
     except Exception as e:
         raise ValueError(f"Could not read image '{path}': {e}")
 
-# ---------------------------------------------------------------------------
-# Deep-patch the model config JSON to make a Keras-3-saved model load in
-# TF 2.15 (Keras 2). Two classes of problems are fixed recursively:
-#
-#   1. DTypePolicy  – Keras 3 stores dtype as:
-#        {"module":"keras","class_name":"DTypePolicy","config":{"name":"float32"}}
-#      Keras 2 expects just the string "float32".
-#
-#   2. batch_shape  – Keras 3 InputLayer uses "batch_shape"; Keras 2 uses
-#      "batch_input_shape".
-# ---------------------------------------------------------------------------
-def _fix_config(obj):
-    if isinstance(obj, dict):
-        # Unwrap DTypePolicy → plain string
-        if obj.get("class_name") == "DTypePolicy" and "config" in obj:
-            return obj["config"].get("name", "float32")
-
-        # Fix InputLayer batch_shape key
-        if obj.get("class_name") == "InputLayer" and "config" in obj:
-            cfg = obj["config"]
-            if "batch_shape" in cfg:
-                cfg["batch_input_shape"] = cfg.pop("batch_shape")
-
-        return {k: _fix_config(v) for k, v in obj.items()}
-
-    if isinstance(obj, list):
-        return [_fix_config(i) for i in obj]
-
-    return obj
-
-
-def load_model_keras3_compat(h5_path):
-    """
-    Load a .h5 saved with Keras 3 into TF 2.15 (Keras 2) by:
-      1. Reading the raw model_config JSON from the HDF5 attrs.
-      2. Patching DTypePolicy and batch_shape issues.
-      3. Rebuilding the model architecture from the fixed JSON.
-      4. Loading the weights directly via h5py layer-by-layer.
-    """
-    with h5py.File(h5_path, "r") as f:
-        raw_cfg = f.attrs.get("model_config")
-        if raw_cfg is None:
-            raise ValueError("No 'model_config' found in HDF5 file.")
-        if isinstance(raw_cfg, bytes):
-            raw_cfg = raw_cfg.decode("utf-8")
-
-        config = json.loads(raw_cfg)
-        print("DEBUG: Original model class_name =", config.get("class_name"))
-
-    fixed_config = _fix_config(config)
-    fixed_json = json.dumps(fixed_config)
-
-    print("DEBUG: Rebuilding model from patched config...")
-    model = tf.keras.models.model_from_json(fixed_json)
-    print("DEBUG: Architecture rebuilt. Loading weights...")
-
-    model.load_weights(h5_path)
-    print("DEBUG: Weights loaded successfully!")
-    return model
-
-
 MODEL_PATH = (
     os.path.join("projects", "model5.h5")
     if os.path.exists("projects/model5.h5")
@@ -102,8 +39,10 @@ MODEL_PATH = (
 )
 
 try:
+    print(f"DEBUG: TF version = {tf.__version__}")
+    print(f"DEBUG: Keras version = {tf.keras.__version__}")
     print(f"DEBUG: Attempting load from {MODEL_PATH}")
-    model = load_model_keras3_compat(MODEL_PATH)
+    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
     print("DEBUG: Model loaded successfully!")
 except Exception as e:
     print(f"CRITICAL ERROR: {e}")
