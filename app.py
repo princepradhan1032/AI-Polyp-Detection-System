@@ -5,6 +5,7 @@ import tensorflow as tf
 from flask import Flask, request, render_template, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 import math
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -23,9 +24,21 @@ def serve_uploads(filename):
 def serve_logs(filename):
     return send_from_directory(LOGS_FOLDER, filename)
 
+# --- Safe image reader (handles TIF, BMP, etc. that cv2 may fail on) ---
+def safe_imread(path):
+    """Try cv2 first; fall back to Pillow for formats like TIFF."""
+    img = cv2.imread(path)
+    if img is not None:
+        return img
+    try:
+        pil_img = Image.open(path).convert("RGB")
+        return cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+    except Exception as e:
+        raise ValueError(f"Could not read image '{path}': {e}")
+
 # --- Universal Model Loader ---
-# FIX 1: Use 'input_shape' (not 'shape') — TF 2.15 InputLayer doesn't accept 'shape'
-# FIX 2: Register as 'CompatibleInputLayer' — that's the class name stored in model config
+# FIX 1: key must be 'InputLayer' — that is the class name stored in the .h5 config
+# FIX 2: convert batch_shape → input_shape (TF 2.15 InputLayer rejects batch_shape)
 class CompatibleInputLayer(tf.keras.layers.InputLayer):
     def __init__(self, *args, **kwargs):
         if 'batch_shape' in kwargs:
@@ -39,7 +52,7 @@ try:
     model = tf.keras.models.load_model(
         MODEL_PATH,
         compile=False,
-        custom_objects={'CompatibleInputLayer': CompatibleInputLayer}  # key must match class name in .h5
+        custom_objects={'InputLayer': CompatibleInputLayer}  # key matches class name in .h5
     )
     print("DEBUG: Model loaded successfully!")
 except Exception as e:
@@ -49,9 +62,9 @@ except Exception as e:
 # --- Prediction Logic ---
 def predict_polyp_risk(img_path):
     if model is None:
-        raise ValueError("AI Model not loaded. Check server logs for the load error.")
+        raise ValueError("AI Model failed to load. Check server startup logs.")
 
-    img = cv2.imread(img_path)
+    img = safe_imread(img_path)
     resized = cv2.resize(img, (256, 256))
     normalized = resized / 255.0
 
@@ -71,12 +84,12 @@ def predict_polyp_risk(img_path):
             area_mm2 = cv2.contourArea(c) * (px_to_mm ** 2)
             lengths.append(2 * math.sqrt(area_mm2 / math.pi))
 
-    chance = preds[mask == 1].mean() * 100 if mask.sum() > 0 else 0.0
-    size = max(lengths) if lengths else 0
+    chance = float(preds[mask == 1].mean()) * 100 if mask.sum() > 0 else 0.0
+    size = max(lengths) if lengths else 0.0
     base_risk = 0.6 if size <= 5 else (2.1 if size <= 9 else 13.4)
     risk = (chance / 100) * base_risk
 
-    out_name = f"Analyzed_{os.path.basename(img_path)}"
+    out_name = f"Analyzed_{os.path.splitext(os.path.basename(img_path))[0]}.png"
     cv2.imwrite(os.path.join(LOGS_FOLDER, out_name), output_img)
     return chance, size, risk, out_name
 
@@ -84,18 +97,23 @@ def predict_polyp_risk(img_path):
 @app.route("/", methods=["GET", "POST"])
 def home():
     res, up_img, proc_img, data = None, None, None, None
+
     if request.method == "POST" and "file" in request.files:
         file = request.files["file"]
         if file.filename:
             try:
                 filename = secure_filename(file.filename)
-                path = os.path.join(UPLOAD_FOLDER, filename)
-                file.save(path)
+                orig_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(orig_path)
 
-                png_path = path if path.lower().endswith('.png') else path + ".png"
-                cv2.imwrite(png_path, cv2.imread(path))
+                # Convert to PNG using safe reader (handles TIF, BMP, etc.)
+                base_name = os.path.splitext(filename)[0]
+                png_path = os.path.join(UPLOAD_FOLDER, base_name + ".png")
+                img_data = safe_imread(orig_path)
+                if not cv2.imwrite(png_path, img_data):
+                    raise ValueError("Failed to save converted PNG.")
 
-                up_img = url_for("serve_uploads", filename=os.path.basename(png_path))
+                up_img = url_for("serve_uploads", filename=base_name + ".png")
                 c, s, r, out = predict_polyp_risk(png_path)
                 proc_img = url_for("serve_logs", filename=out)
 
@@ -108,7 +126,13 @@ def home():
             except Exception as e:
                 res = f"Error: {str(e)}"
 
-    return render_template("results.html", result=res, uploaded_image=up_img, processed_image=proc_img, result_data=data)
+    return render_template(
+        "results.html",
+        result=res,
+        uploaded_image=up_img,
+        processed_image=proc_img,
+        result_data=data
+    )
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
