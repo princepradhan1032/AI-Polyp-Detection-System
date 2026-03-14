@@ -1,1 +1,4220 @@
+  <!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Polyp Detection & Cancer Risk Prediction</title>
+</head>
+<body>
+    <h1>Upload Colonoscopy Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Analyze</button>
+    </form>
 
+    {% if result %}
+        <h2>Result:</h2>
+        <p>{{ result }}</p>
+    {% endif %}
+
+    {% if uploaded_image %}
+        <h2>Uploaded Image:</h2>
+        <img src="{{ uploaded_image }}" alt="Uploaded Image" width="300">
+    {% endif %}
+
+    {% if processed_image %}
+        <h2>Processed Image:</h2>
+        <img src="{{ processed_image }}" alt="Processed Image" width="300">
+    {% endif %}
+</body>
+</html>  -->
+
+<!-- 
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Polyp Detection Result</title>
+</head>
+<body>
+    <h1>Upload an Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required />
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if uploaded_image and processed_image and result %}
+        <div style="display:flex; gap: 20px; margin-top: 20px;">
+            <div>
+                <h2>Original Uploaded Image</h2>
+                <img src="{{ uploaded_image }}" width="300" alt="Uploaded Image" />
+            </div>
+            <div>
+                <h2>Processed Result Image</h2>
+                <img src="{{ processed_image }}" width="300" alt="Processed Image" />
+                <div>
+                    <p><strong>Polyp Chance: </strong>{{ result.polyp_chance }}%</p>
+                    <p><strong>Polyp Length: </strong>{{ result.polyp_length_mm }} mm</p>
+                    <p><strong>Cancer Risk: </strong>{{ result.cancer_risk }}%</p>
+                </div>
+            </div>
+        </div>
+    {% elif result %}
+        <p>{{ result }}</p>
+    {% endif %}
+</body>
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Polyp Detection and Cancer Risk</title>
+</head>
+<body>
+    <h1>Upload Colonoscopy Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required />
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result_data %}
+        <h2>Result:</h2>
+        <p>Polyp Chance: {{ result_data.polyp_chance }}%</p>
+        <p>Polyp Length: {{ result_data.polyp_length_mm }} mm</p>
+        <p>Cancer Risk: {{ result_data.cancer_risk }}%</p>
+    {% elif result %}
+        <p>{{ result }}</p>
+    {% endif %}
+
+    {% if uploaded_image %}
+        <h2>Uploaded Image:</h2>
+        <img src="{{ uploaded_image }}" alt="Uploaded Image" width="300" />
+    {% endif %}
+
+    {% if processed_image %}
+        <h2>Processed Image:</h2>
+        <img src="{{ processed_image }}" alt="Processed Image" width="300" />
+    {% endif %}
+</body>
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Polyp Detection & Cancer Risk</title>
+</head>
+<body>
+    <h1>Upload Colonoscopy Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required />
+        <button type="submit">Analyze</button>
+    </form>
+
+    <!-- {% if result_data %}
+    <h2>Result:</h2>
+    <p>Polyp Chance: {{ result_data.polyp_chance }}%</p>
+    <p>Polyp Length: {{ result_data.polyp_length_mm }} mm</p>
+    <p>Cancer Risk: {{ result_data.cancer_risk }}%</p>
+    {% elif result %}
+    <p>{{ result }}</p>
+    {% endif %} -->
+    
+
+    <!-- {% if uploaded_image %}
+    <h2>Uploaded Image:</h2>
+    <img src="{{ uploaded_image }}" alt="Uploaded Image" width="300" />
+    {% endif %}
+
+    {% if processed_image %}
+    <h2>Processed Image:</h2>
+    <img src="{{ processed_image }}" alt="Processed Image" width="300" />
+    {% endif %}
+</body>
+</html> --> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polyp Detection & Cancer Risk</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; background-color: #f4f4f9; color: #333; }
+        h1, h2 { color: #444; }
+        .container { display: flex; gap: 2em; flex-wrap: wrap; margin-top: 2em; }
+        .card { background: white; padding: 1.5em; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        img { border-radius: 4px; max-width: 100%; }
+        .results p { font-size: 1.2em; margin: 0.5em 0; }
+        .results p span { font-weight: bold; color: #0056b3; }
+        button { padding: 0.5em 1em; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Upload Colonoscopy Image</h1>
+    <div class="card">
+        The form posts data to the same URL ('/')
+        <form method="post" enctype="multipart/form-data" action="/">
+            The name attribute "file" MUST match request.files['file'] in the Python code
+            <input type="file" name="file" accept="image/*" required />
+            <button type="submit">Analyze</button>
+        </form>
+    </div>
+
+   
+    {% if result_data %} 
+    <div class="container">
+        <div class="card results">
+            <h2>Analysis Results:</h2>
+            <p>Polyp Chance: <span>{{ result_data.polyp_chance }}%</span></p>
+            <p>Estimated Polyp Length: <span>{{ result_data.polyp_length_mm }} mm</span></p>
+            <p>Estimated Cancer Risk: <span>{{ result_data.cancer_risk }}%</span></p>
+        </div>
+
+        {% if uploaded_image %}
+        <div class="card">
+            <h2>Uploaded Image:</h2>
+            <img src="{{ uploaded_image }}" alt="Uploaded Image" width="300" />
+        </div>
+        {% endif %}
+
+        {% if processed_image %}
+        <div class="card">
+            <h2>Processed Image:</h2>
+            <img src="{{ processed_image }}" alt="Processed Image" width="300" />
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</body>
+</html>
+
+  -->
+
+
+ <!--<!DOCTYPE html>
+<html>
+<head>
+    <title>Polyp Detection & Cancer Risk Prediction</title>
+</head>
+<body>
+    <h1>Upload Colonoscopy Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result %}
+        <h2>Result:</h2>
+        <p>{{ result }}</p>
+    {% endif %}
+
+    {% if uploaded_image %}
+        <h2>Uploaded Image:</h2>
+        <img src="{{ uploaded_image }}" alt="Uploaded Image" width="300">
+    {% endif %}
+
+    {% if processed_image %}
+        <h2>Processed Image:</h2>
+        <img src="{{ processed_image }}" alt="Processed Image" width="300">
+    {% endif %} 
+</body>
+</html>-->
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Polyp Detection & Cancer Risk Prediction</title>
+</head>
+<body>
+    <h1>Upload Colonoscopy Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result %}
+        <h2>Status:</h2>
+        <p>{{ result }}</p>
+    {% endif %}
+
+    {% if result_data %}
+        <h2>Prediction Results:</h2>
+        <p>Polyp Chance: {{ result_data.polyp_chance }}%</p>
+        <p>Estimated Polyp Length: {{ result_data.polyp_length_mm }} mm</p>
+        <p>Estimated Cancer Risk: {{ result_data.cancer_risk }}%</p>
+    {% endif %}
+
+    {% if uploaded_image %}
+        <h2>Uploaded Image:</h2>
+        <img src="{{ uploaded_image }}" alt="Uploaded Image" width="300">
+    {% endif %}
+
+    {% if processed_image %}
+        <h2>Processed Image:</h2>
+        <img src="{{ processed_image }}" alt="Processed Image" width="300">
+    {% endif %}
+</body>
+</html> -->
+
+
+
+
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polyp Detection & Cancer Risk Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+    <!-- Google Font 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        input[type="file"] {
+            display: block;
+            margin: 0 auto 20px auto;
+            padding: 10px;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #333;
+            border: none;
+            cursor: pointer;
+            width: 80%;
+        }
+        button {
+            background: #ff6a00;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background: #ee0979;
+            transform: translateY(-2px);
+        }
+        h2 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 22px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 5px;
+        }
+        p {
+            margin: 8px 0;
+            font-size: 18px;
+        }
+        img {
+            margin-top: 15px;
+            border-radius: 12px;
+            border: 3px solid rgba(255,255,255,0.3);
+            max-width: 90%;
+            height: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 22px; }
+            h2 { font-size: 20px; }
+            p  { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Polyp Detection & Cancer Risk Prediction</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if result %}
+            <h2>Status</h2>
+            <p>{{ result }}</p>
+        {% endif %}
+
+        {% if result_data %}
+            <h2>Prediction Results</h2>
+            <p>Polyp Chance: <strong>{{ result_data['polyp_chance'] }}%</strong></p>
+            <p>Estimated Polyp Length: <strong>{{ result_data['polyp_length_mm'] }} mm</strong></p>
+            <p>Estimated Cancer Risk: <strong>{{ result_data['cancer_risk'] }}%</strong></p>
+        {% endif %}
+
+        {% if uploaded_image %}
+            <h2>Uploaded Image</h2>
+            <img src="{{ uploaded_image }}" alt="Uploaded Image">
+        {% endif %}
+
+        {% if processed_image %}
+            <h2>Processed Image</h2>
+            <img src="{{ processed_image }}" alt="Processed Image">
+        {% endif %}
+    </div>
+</body>
+</html> -->
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI-Powered Polyp Detection & Cancer Risk Analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #81FBB8 0%, #28C76F 100%);
+            --warning-gradient: linear-gradient(135deg, #FEB692 0%, #EA5455 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --shadow-soft: 0 8px 32px rgba(31, 38, 135, 0.37);
+            --shadow-hover: 0 16px 48px rgba(31, 38, 135, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Advanced floating particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.06) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 200px 200px, 150px 150px, 100px 100px, 80px 80px;
+            animation: floatParticles 25s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes floatParticles {
+            0% { transform: translate(0, 100vh) rotate(0deg); }
+            100% { transform: translate(0, -100vh) rotate(360deg); }
+        }
+
+        /* Main container with advanced glassmorphism */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            animation: containerEntry 1s ease-out;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            border-radius: 32px 32px 0 0;
+        }
+
+        .container:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        @keyframes containerEntry {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* Enhanced title with medical icons */
+        h1 {
+            font-weight: 800;
+            font-size: clamp(28px, 5vw, 48px);
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .medical-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: iconPulse 2s ease-in-out infinite;
+            box-shadow: 0 4px 16px rgba(79, 172, 254, 0.3);
+        }
+
+        .medical-icon::after {
+            content: '🔬';
+            font-size: 24px;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 6px 24px rgba(79, 172, 254, 0.4); }
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 400;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Advanced form styling */
+        form {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .upload-area {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .file-drop-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 48px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-drop-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .file-drop-zone:hover {
+            border-color: rgba(79, 172, 254, 0.6);
+            background: rgba(79, 172, 254, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(79, 172, 254, 0.2);
+        }
+
+        .file-drop-zone:hover::before {
+            left: 100%;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .file-drop-zone:hover .upload-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-subtext {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Advanced button with multiple states */
+        .analyze-btn {
+            background: var(--secondary-gradient);
+            border: none;
+            padding: 18px 48px;
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(240, 147, 251, 0.3);
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .analyze-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 36px rgba(240, 147, 251, 0.4);
+        }
+
+        .analyze-btn:hover::before {
+            left: 100%;
+        }
+
+        .analyze-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .analyze-btn.loading {
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .analyze-btn.success {
+            background: var(--success-gradient);
+            box-shadow: 0 8px 24px rgba(129, 251, 184, 0.3);
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--text-primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Results sections with staggered animations */
+        .results-section {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            margin: 24px 0;
+            animation: slideInResult 0.6s ease-out both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-section:nth-child(2) { animation-delay: 0.1s; }
+        .results-section:nth-child(3) { animation-delay: 0.2s; }
+        .results-section:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes slideInResult {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+                filter: blur(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .status-icon {
+            background: var(--success-gradient);
+        }
+
+        .results-icon {
+            background: var(--accent-gradient);
+        }
+
+        .image-icon {
+            background: var(--secondary-gradient);
+        }
+
+        /* Enhanced metrics display */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .metric-value.high-risk {
+            color: #FF6B6B;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .metric-value.medium-risk {
+            color: #FFD93D;
+            text-shadow: 0 0 20px rgba(255, 217, 61, 0.3);
+        }
+
+        .metric-value.low-risk {
+            color: #6BCF7F;
+            text-shadow: 0 0 20px rgba(107, 207, 127, 0.3);
+        }
+
+        /* Enhanced image display */
+        .image-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            padding: 20px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover .image-overlay {
+            transform: translateY(0);
+        }
+
+        /* Status indicator */
+        .status-text {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-top: 16px;
+            padding: 16px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #6BCF7F;
+            text-align: left;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 32px 24px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 32px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .medical-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .file-drop-zone {
+                padding: 32px 16px;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analyze-btn {
+                width: 100%;
+                padding: 16px;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .analyze-btn:focus,
+        input[type="file"]:focus + .file-drop-zone {
+            outline: 2px solid rgba(79, 172, 254, 0.8);
+            outline-offset: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="medical-icon"></div>
+        <h1>AI Polyp Detection</h1>
+        <p class="subtitle">Advanced medical imaging analysis with machine learning</p>
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="upload-area">
+                <input type="file" name="file" accept="image/*" required id="fileInput">
+                <div class="file-drop-zone">
+                    <div class="upload-icon">📋</div>
+                    <div class="upload-text">Drop your medical image here</div>
+                    <div class="upload-subtext">or click to browse • JPG, PNG, DICOM supported</div>
+                </div>
+            </div>
+            <button type="submit" class="analyze-btn">
+                <span class="btn-text">Start Analysis</span>
+            </button>
+        </form>
+
+        {% if result %}
+        <div class="results-section">
+            <h2>
+                <span class="section-icon status-icon">✓</span>
+                Analysis Status
+            </h2>
+            <div class="status-text">{{ result }}</div>
+        </div>
+        {% endif %}
+
+        {% if result_data %}
+        <div class="results-section">
+            <h2>
+                <span class="section-icon results-icon">📊</span>
+                Diagnostic Results
+            </h2>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Polyp Detection</div>
+                    <div class="metric-value">{{ result_data['polyp_chance'] }}%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Estimated Size</div>
+                    <div class="metric-value">{{ result_data['polyp_length_mm'] }}mm</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Cancer Risk</div>
+                    <div class="metric-value {% if result_data['cancer_risk']|int > 70 %}high-risk{% elif result_data['cancer_risk']|int > 30 %}medium-risk{% else %}low-risk{% endif %}">
+                        {{ result_data['cancer_risk'] }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if uploaded_image %}
+        <div class="results-section">
+            <h2>
+                <span class="section-icon image-icon">🖼️</span>
+                Original Image
+            </h2>
+            <div class="image-container">
+                <img src="{{ uploaded_image }}" alt="Original medical image">
+                <div class="image-overlay">
+                    <strong>Original Image</strong><br>
+                    Ready for AI analysis
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if processed_image %}
+        <div class="results-section">
+            <h2>
+                <span class="section-icon image-icon">🔬</span>
+                AI Analysis
+            </h2>
+            <div class="image-container">
+                <img src="{{ processed_image }}" alt="AI processed medical image">
+                <div class="image-overlay">
+                    <strong>Processed Image</strong><br>
+                    AI-enhanced visualization with detected regions
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Enhanced file input handling
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.querySelector('.file-drop-zone');
+        const analyzeBtn = document.querySelector('.analyze-btn');
+        const btnText = document.querySelector('.btn-text');
+        const form = document.querySelector('form');
+
+        // File selection handler
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                dropZone.innerHTML = `
+                    <div class="upload-icon">✓</div>
+                    <div class="upload-text">File Selected</div>
+                    <div class="upload-subtext">${file.name} • ${(file.size / 1024 / 1024).toFixed(2)}MB</div>
+                `;
+                analyzeBtn.classList.add('success');
+                btnText.textContent = 'Analyze Image';
+            }
+        });
+
+        // Drag and drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.style.borderColor = 'rgba(79, 172, 254, 0.8)';
+            dropZone.style.background = 'rgba(79, 172, 254, 0.15)';
+        }
+
+        function unhighlight(e) {
+            dropZone.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            dropZone.style.background = 'rgba(255, 255, 255, 0.05)';
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            
+            const changeEvent = new Event('change', { bubbles: true });
+            fileInput.dispatchEvent(changeEvent);
+        }
+
+        // Form submission with loading state
+        form.addEventListener('submit', function(e) {
+            analyzeBtn.classList.add('loading');
+            analyzeBtn.disabled = true;
+            btnText.innerHTML = '<span class="spinner"></span>Analyzing Image...';
+            
+            // Simulate progress for better UX
+            setTimeout(() => {
+                if (btnText.innerHTML.includes('Analyzing')) {
+                    btnText.innerHTML = '<span class="spinner"></span>Processing Neural Network...';
+                }
+            }, 2000);
+            
+            setTimeout(() => {
+                if (btnText.innerHTML.includes('Processing')) {
+                    btnText.innerHTML = '<span class="spinner"></span>Generating Report...';
+                }
+            }, 4000);
+        });
+
+        // Add smooth scrolling to results
+        function scrollToResults() {
+            const results = document.querySelector('.results-section');
+            if (results) {
+                results.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }
+        }
+
+        // Trigger scroll on page load if results exist
+        if (document.querySelector('.results-section')) {
+            setTimeout(scrollToResults, 500);
+        }
+
+        // Enhanced keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target === fileInput) {
+                fileInput.click();
+            }
+        });
+
+        // Add subtle parallax effect to background
+        document.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            document.body.style.backgroundPosition = 
+                `${50 + mouseX * 10}% ${50 + mouseY * 10}%`;
+        });
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI-Powered Polyp Detection & Cancer Risk Analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #81FBB8 0%, #28C76F 100%);
+            --warning-gradient: linear-gradient(135deg, #FEB692 0%, #EA5455 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --shadow-soft: 0 8px 32px rgba(31, 38, 135, 0.37);
+            --shadow-hover: 0 16px 48px rgba(31, 38, 135, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Advanced floating particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.06) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 200px 200px, 150px 150px, 100px 100px, 80px 80px;
+            animation: floatParticles 25s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes floatParticles {
+            0% { transform: translate(0, 100vh) rotate(0deg); }
+            100% { transform: translate(0, -100vh) rotate(360deg); }
+        }
+
+        /* Main container with advanced glassmorphism */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            animation: containerEntry 1s ease-out;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            border-radius: 32px 32px 0 0;
+        }
+
+        .container:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        @keyframes containerEntry {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* Enhanced title with medical icons */
+        h1 {
+            font-weight: 800;
+            font-size: clamp(28px, 5vw, 48px);
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .medical-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: iconPulse 2s ease-in-out infinite;
+            box-shadow: 0 4px 16px rgba(79, 172, 254, 0.3);
+        }
+
+        .medical-icon::after {
+            content: '🔬';
+            font-size: 24px;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 6px 24px rgba(79, 172, 254, 0.4); }
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 400;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Advanced form styling */
+        form {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .upload-area {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .file-drop-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 48px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-drop-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .file-drop-zone:hover {
+            border-color: rgba(79, 172, 254, 0.6);
+            background: rgba(79, 172, 254, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(79, 172, 254, 0.2);
+        }
+
+        .file-drop-zone:hover::before {
+            left: 100%;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .file-drop-zone:hover .upload-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-subtext {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Advanced button with multiple states */
+        .analyze-btn {
+            background: var(--secondary-gradient);
+            border: none;
+            padding: 18px 48px;
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(240, 147, 251, 0.3);
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .analyze-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 36px rgba(240, 147, 251, 0.4);
+        }
+
+        .analyze-btn:hover::before {
+            left: 100%;
+        }
+
+        .analyze-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .analyze-btn.loading {
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .analyze-btn.success {
+            background: var(--success-gradient);
+            box-shadow: 0 8px 24px rgba(129, 251, 184, 0.3);
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--text-primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Results sections with staggered animations */
+        .results-section {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            margin: 24px 0;
+            animation: slideInResult 0.6s ease-out both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-section:nth-child(2) { animation-delay: 0.1s; }
+        .results-section:nth-child(3) { animation-delay: 0.2s; }
+        .results-section:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes slideInResult {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+                filter: blur(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .status-icon {
+            background: var(--success-gradient);
+        }
+
+        .results-icon {
+            background: var(--accent-gradient);
+        }
+
+        .image-icon {
+            background: var(--secondary-gradient);
+        }
+
+        /* Enhanced metrics display */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .metric-value.high-risk {
+            color: #FF6B6B;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .metric-value.medium-risk {
+            color: #FFD93D;
+            text-shadow: 0 0 20px rgba(255, 217, 61, 0.3);
+        }
+
+        .metric-value.low-risk {
+            color: #6BCF7F;
+            text-shadow: 0 0 20px rgba(107, 207, 127, 0.3);
+        }
+
+        /* Image comparison grid */
+        .image-comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 20px;
+        }
+
+        .image-comparison-item {
+            position: relative;
+        }
+
+        .image-title {
+            font-size: 18px;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .image-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            padding: 20px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover .image-overlay {
+            transform: translateY(0);
+        }
+
+        /* Status indicator */
+        .status-text {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-top: 16px;
+            padding: 16px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #6BCF7F;
+            text-align: left;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 32px 24px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 32px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .medical-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .file-drop-zone {
+                padding: 32px 16px;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analyze-btn {
+                width: 100%;
+                padding: 16px;
+            }
+
+            .image-comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .analyze-btn:focus,
+        input[type="file"]:focus + .file-drop-zone {
+            outline: 2px solid rgba(79, 172, 254, 0.8);
+            outline-offset: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="medical-icon"></div>
+        <h1>AI Polyp Detection</h1>
+        <p class="subtitle">Advanced medical imaging analysis with machine learning</p>
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="upload-area">
+                <input type="file" name="file" accept="image/*" required id="fileInput">
+                <div class="file-drop-zone">
+                    <div class="upload-icon">📋</div>
+                    <div class="upload-text">Drop your medical image here</div>
+                    <div class="upload-subtext">or click to browse • JPG, PNG, DICOM supported</div>
+                </div>
+            </div>
+            <button type="submit" class="analyze-btn">
+                <span class="btn-text">Start Analysis</span>
+            </button>
+        </form>
+
+        {% if result %}
+        <div class="results-section">
+            <h2>
+                <span class="section-icon status-icon">✓</span>
+                Analysis Status
+            </h2>
+            <div class="status-text">{{ result }}</div>
+        </div>
+        {% endif %}
+
+        {% if result_data %}
+        <div class="results-section">
+            <h2>
+                <span class="section-icon results-icon">📊</span>
+                Diagnostic Results
+            </h2>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Polyp Detection</div>
+                    <div class="metric-value">{{ result_data['polyp_chance'] }}%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Estimated Size</div>
+                    <div class="metric-value">{{ result_data['polyp_length_mm'] }}mm</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Cancer Risk</div>
+                    <div class="metric-value {% if result_data['cancer_risk']|int > 70 %}high-risk{% elif result_data['cancer_risk']|int > 30 %}medium-risk{% else %}low-risk{% endif %}">
+                        {{ result_data['cancer_risk'] }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if uploaded_image or processed_image %}
+        <div class="results-section">
+            <h2>
+                <span class="section-icon image-icon">🖼️</span>
+                Image Comparison
+            </h2>
+            <div class="image-comparison-grid">
+                {% if uploaded_image %}
+                <div class="image-comparison-item">
+                    <h3 class="image-title">Original Image</h3>
+                    <div class="image-container">
+                        <img src="{{ uploaded_image }}" alt="Original medical image">
+                        <div class="image-overlay">
+                            <strong>Original Image</strong><br>
+                            Ready for AI analysis
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if processed_image %}
+                <div class="image-comparison-item">
+                    <h3 class="image-title">AI Analysis</h3>
+                    <div class="image-container">
+                        <img src="{{ processed_image }}" alt="AI processed medical image">
+                        <div class="image-overlay">
+                            <strong>Processed Image</strong><br>
+                            AI-enhanced visualization with detected regions
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Enhanced file input handling
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.querySelector('.file-drop-zone');
+        const analyzeBtn = document.querySelector('.analyze-btn');
+        const btnText = document.querySelector('.btn-text');
+        const form = document.querySelector('form');
+
+        // File selection handler
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                dropZone.innerHTML = `
+                    <div class="upload-icon">✓</div>
+                    <div class="upload-text">File Selected</div>
+                    <div class="upload-subtext">${file.name} • ${(file.size / 1024 / 1024).toFixed(2)}MB</div>
+                `;
+                analyzeBtn.classList.add('success');
+                btnText.textContent = 'Analyze Image';
+            }
+        });
+
+        // Drag and drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.style.borderColor = 'rgba(79, 172, 254, 0.8)';
+            dropZone.style.background = 'rgba(79, 172, 254, 0.15)';
+        }
+
+        function unhighlight(e) {
+            dropZone.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            dropZone.style.background = 'rgba(255, 255, 255, 0.05)';
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            
+            const changeEvent = new Event('change', { bubbles: true });
+            fileInput.dispatchEvent(changeEvent);
+        }
+
+        // Form submission with loading state
+        form.addEventListener('submit', function(e) {
+            analyzeBtn.classList.add('loading');
+            analyzeBtn.disabled = true;
+            btnText.innerHTML = '<span class="spinner"></span>Analyzing Image...';
+            
+            // Simulate progress for better UX
+            setTimeout(() => {
+                if (btnText.innerHTML.includes('Analyzing')) {
+                    btnText.innerHTML = '<span class="spinner"></span>Processing Neural Network...';
+                }
+            }, 2000);
+            
+            setTimeout(() => {
+                if (btnText.innerHTML.includes('Processing')) {
+                    btnText.innerHTML = '<span class="spinner"></span>Generating Report...';
+                }
+            }, 4000);
+        });
+
+        // Add smooth scrolling to results
+        function scrollToResults() {
+            const results = document.querySelector('.results-section');
+            if (results) {
+                results.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }
+        }
+
+        // Trigger scroll on page load if results exist
+        if (document.querySelector('.results-section')) {
+            setTimeout(scrollToResults, 500);
+        }
+
+        // Enhanced keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target === fileInput) {
+                fileInput.click();
+            }
+        });
+
+        // Add subtle parallax effect to background
+        document.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            document.body.style.backgroundPosition = 
+                `${50 + mouseX * 10}% ${50 + mouseY * 10}%`;
+        });
+    </script>
+</body>
+</html> -->
+ 
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI-Powered Polyp Detection & Cancer Risk Analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Professional Medical Color Palette */
+        --primary-blue: #2563eb;
+        --primary-blue-light: #3b82f6;
+        --primary-blue-dark: #1d4ed8;
+        --secondary-teal: #0891b2;
+        --secondary-teal-light: #06b6d4;
+        --accent-green: #059669;
+        --accent-green-light: #10b981;
+        --warning-amber: #d97706;
+        --danger-red: #dc2626;
+
+        /* Neutral Colors */
+        --white: #ffffff;
+        --gray-50: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e1;
+        --gray-400: #94a3b8;
+        --gray-500: #64748b;
+        --gray-600: #475569;
+        --gray-700: #334155;
+        --gray-800: #1e293b;
+        --gray-900: #0f172a;
+
+        /* Gradients */
+        --primary-gradient: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-teal) 100%);
+        --success-gradient: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-light) 100%);
+        --warning-gradient: linear-gradient(135deg, var(--warning-amber) 0%, #f59e0b 100%);
+        --danger-gradient: linear-gradient(135deg, var(--danger-red) 0%, #ef4444 100%);
+
+        /* Shadows */
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+        /* Border Radius */
+        --radius-sm: 0.375rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+        --radius-xl: 1rem;
+        --radius-2xl: 1.5rem;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 50%, #e0f2fe 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        color: var(--gray-800);
+        line-height: 1.6;
+      }
+
+      /* Subtle background pattern */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+          radial-gradient(circle at 25% 25%, rgba(37, 99, 235, 0.03) 2px, transparent 2px),
+          radial-gradient(circle at 75% 75%, rgba(8, 145, 178, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px, 40px 40px;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      /* Main container */
+      .container {
+        width: 100%;
+        max-width: 900px;
+        background: var(--white);
+        border-radius: var(--radius-2xl);
+        padding: 48px;
+        text-align: center;
+        box-shadow: var(--shadow-2xl);
+        border: 1px solid var(--gray-200);
+        animation: containerEntry 0.8s ease-out;
+        position: relative;
+      }
+
+      .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+        border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+      }
+
+      @keyframes containerEntry {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Header section */
+      .header {
+        margin-bottom: 48px;
+      }
+
+      .medical-icon {
+        width: 64px;
+        height: 64px;
+        background: var(--primary-gradient);
+        border-radius: var(--radius-xl);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+      }
+
+      .medical-icon::after {
+        content: '🔬';
+        font-size: 32px;
+      }
+
+      h1 {
+        font-weight: 800;
+        font-size: clamp(32px, 5vw, 48px);
+        margin-bottom: 16px;
+        color: var(--gray-900);
+        letter-spacing: -0.025em;
+        line-height: 1.1;
+      }
+
+      .subtitle {
+        font-size: 18px;
+        color: var(--gray-600);
+        font-weight: 400;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Form styling */
+      form {
+        margin-bottom: 48px;
+      }
+
+      .upload-area {
+        position: relative;
+        margin-bottom: 32px;
+      }
+
+      input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .file-drop-zone {
+        border: 2px dashed var(--gray-300);
+        border-radius: var(--radius-xl);
+        padding: 48px 24px;
+        background: var(--gray-50);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+
+      .file-drop-zone:hover {
+        border-color: var(--primary-blue);
+        background: rgba(37, 99, 235, 0.02);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .upload-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.6;
+        transition: all 0.3s ease;
+      }
+
+      .file-drop-zone:hover .upload-icon {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+
+      .upload-text {
+        font-size: 18px;
+        color: var(--gray-700);
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      .upload-subtext {
+        font-size: 14px;
+        color: var(--gray-500);
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      /* Button styling */
+      .analyze-btn {
+        background: var(--primary-gradient);
+        border: none;
+        padding: 16px 48px;
+        border-radius: var(--radius-xl);
+        color: var(--white);
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        overflow: hidden;
+        min-width: 200px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .analyze-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .analyze-btn:active {
+        transform: translateY(0);
+      }
+
+      .analyze-btn.loading {
+        pointer-events: none;
+        background: var(--gray-400);
+      }
+
+      .analyze-btn.success {
+        background: var(--success-gradient);
+      }
+
+      /* Loading spinner */
+      .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--white);
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 12px;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Results sections */
+      .results-section {
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-xl);
+        padding: 32px;
+        margin: 24px 0;
+        animation: slideInResult 0.6s ease-out both;
+        box-shadow: var(--shadow-md);
+        text-align: left;
+      }
+
+      .results-section:nth-child(2) { animation-delay: 0.1s; }
+      .results-section:nth-child(3) { animation-delay: 0.2s; }
+      .results-section:nth-child(4) { animation-delay: 0.3s; }
+
+      @keyframes slideInResult {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h2 {
+        font-size: 24px;
+        margin-bottom: 24px;
+        color: var(--gray-900);
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: -0.01em;
+      }
+
+      .section-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: var(--white);
+      }
+
+      .status-icon {
+        background: var(--success-gradient);
+      }
+
+      .results-icon {
+        background: var(--primary-gradient);
+      }
+
+      .image-icon {
+        background: var(--secondary-teal);
+      }
+
+      /* Metrics display */
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      .metric-card {
+        background: var(--gray-50);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        border: 1px solid var(--gray-200);
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        background: var(--white);
+      }
+
+      .metric-label {
+        font-size: 14px;
+        color: var(--gray-600);
+        margin-bottom: 8px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .metric-value {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--gray-900);
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      .metric-value.high-risk {
+        color: var(--danger-red);
+      }
+
+      .metric-value.medium-risk {
+        color: var(--warning-amber);
+      }
+
+      .metric-value.low-risk {
+        color: var(--accent-green);
+      }
+
+      /* Image comparison */
+      .image-comparison-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .image-comparison-item {
+        position: relative;
+      }
+
+      .image-title {
+        font-size: 18px;
+        color: var(--gray-900);
+        font-weight: 600;
+        margin-bottom: 16px;
+        text-align: center;
+        padding: 12px 20px;
+        background: var(--gray-100);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--gray-200);
+      }
+
+      .image-container {
+        position: relative;
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--gray-200);
+      }
+
+      .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .image-container:hover img {
+        transform: scale(1.02);
+      }
+
+      .image-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        padding: 20px;
+        color: var(--white);
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+      }
+
+      .image-container:hover .image-overlay {
+        transform: translateY(0);
+      }
+
+      /* Status text */
+      .status-text {
+        font-size: 16px;
+        color: var(--gray-700);
+        padding: 20px 24px;
+        background: var(--gray-50);
+        border-radius: var(--radius-lg);
+        border-left: 4px solid var(--accent-green);
+        border: 1px solid var(--gray-200);
+        line-height: 1.6;
+      }
+
+      /* Alert styles for different status types */
+      .alert {
+        padding: 16px 20px;
+        border-radius: var(--radius-lg);
+        border: 1px solid;
+        margin: 16px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .alert-success {
+        background: rgba(5, 150, 105, 0.1);
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+      }
+
+      .alert-warning {
+        background: rgba(217, 119, 6, 0.1);
+        border-color: var(--warning-amber);
+        color: var(--warning-amber);
+      }
+
+      .alert-danger {
+        background: rgba(220, 38, 38, 0.1);
+        border-color: var(--danger-red);
+        color: var(--danger-red);
+      }
+
+      .alert-info {
+        background: rgba(37, 99, 235, 0.1);
+        border-color: var(--primary-blue);
+        color: var(--primary-blue);
+      }
+
+      /* Progress bar */
+      .progress-container {
+        width: 100%;
+        height: 8px;
+        background: var(--gray-200);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        margin: 16px 0;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: var(--primary-gradient);
+        border-radius: var(--radius-sm);
+        transition: width 0.3s ease;
+        animation: progressPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes progressPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+
+      /* Badge styles */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: var(--radius-md);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .badge-success {
+        background: var(--success-gradient);
+        color: var(--white);
+      }
+
+      .badge-warning {
+        background: var(--warning-gradient);
+        color: var(--white);
+      }
+
+      .badge-danger {
+        background: var(--danger-gradient);
+        color: var(--white);
+      }
+
+      .badge-info {
+        background: var(--primary-gradient);
+        color: var(--white);
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .container {
+          padding: 32px 24px;
+          margin: 10px;
+        }
+
+        h1 {
+          font-size: 32px;
+        }
+
+        .medical-icon {
+          width: 56px;
+          height: 56px;
+        }
+
+        .medical-icon::after {
+          font-size: 28px;
+        }
+
+        .file-drop-zone {
+          padding: 32px 16px;
+        }
+
+        .metric-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .analyze-btn {
+          width: 100%;
+          padding: 16px;
+        }
+
+        .image-comparison-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .section-icon {
+          width: 32px;
+          height: 32px;
+          font-size: 16px;
+        }
+
+        h2 {
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 24px 16px;
+        }
+
+        .subtitle {
+          font-size: 16px;
+        }
+
+        .metric-card {
+          padding: 20px;
+        }
+
+        .metric-value {
+          font-size: 24px;
+        }
+      }
+
+      /* Accessibility improvements */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      /* Focus styles for accessibility */
+      .analyze-btn:focus,
+      input[type="file"]:focus + .file-drop-zone {
+        outline: 2px solid var(--primary-blue);
+        outline-offset: 4px;
+      }
+
+      /* High contrast mode support */
+      @media (prefers-contrast: high) {
+        .container {
+          border: 2px solid var(--gray-900);
+        }
+        .file-drop-zone {
+          border-width: 3px;
+        }
+        .metric-card {
+          border-width: 2px;
+        }
+      }
+
+      /* Print styles */
+      @media print {
+        body {
+          background: white;
+        }
+        .container {
+          box-shadow: none;
+          border: 1px solid var(--gray-300);
+        }
+        .analyze-btn,
+        .upload-area {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="medical-icon"></div>
+        <h1> Polyp <span class="role"></span></h1>
+
+        <p class="subtitle">
+          Advanced medical imaging analysis powered by machine learning for
+          accurate polyp detection and cancer risk assessment
+        </p>
+      </div>
+
+      <form method="post" enctype="multipart/form-data">
+        <div class="upload-area">
+          <input
+            type="file"
+            name="file"
+            accept="image/*"
+            required
+            id="fileInput"
+          />
+          <div class="file-drop-zone">
+            <div class="upload-icon">📋</div>
+            <div class="upload-text">Drop your medical image here</div>
+            <div class="upload-subtext">
+              or click to browse • JPG, PNG, DICOM supported • Max 10MB
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="analyze-btn">
+          <span class="btn-text">Start Analysis</span>
+        </button>
+      </form>
+
+      {% if result %}
+      <div class="results-section">
+        <h2>
+          <span class="section-icon status-icon">✓</span>
+          Analysis Status
+        </h2>
+        <div class="status-text">{{ result }}</div>
+        <div class="progress-container">
+          <div class="progress-bar" style="width: 100%"></div>
+        </div>
+      </div>
+      {% endif %} 
+      
+      {% if result_data %}
+      <div class="results-section">
+        <h2>
+          <span class="section-icon results-icon">📊</span>
+          Diagnostic Results
+        </h2>
+
+        <div class="alert alert-info">
+          <strong>Analysis Complete:</strong> AI has processed your medical
+          image with high confidence.
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-label">Polyp Detection Confidence</div>
+            <div class="metric-value">{{ result_data['polyp_chance'] }}%</div>
+            {% if result_data['polyp_chance']|float > 80 %}
+            <span class="badge badge-danger">High Confidence</span>
+            {% elif result_data['polyp_chance']|float > 50 %}
+            <span class="badge badge-warning">Medium Confidence</span>
+            {% else %}
+            <span class="badge badge-success">Low Detection</span>
+            {% endif %}
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Estimated Size</div>
+            <div class="metric-value">
+              {{ result_data['polyp_length_mm'] }}mm
+            </div>
+            {% if result_data['polyp_length_mm']|float > 10 %}
+            <span class="badge badge-warning">Large</span>
+            {% elif result_data['polyp_length_mm']|float > 5 %}
+            <span class="badge badge-info">Medium</span>
+            {% else %}
+            <span class="badge badge-success">Small</span>
+            {% endif %}
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Cancer Risk Assessment</div>
+            <div class="metric-value {% if result_data['cancer_risk']|float > 70 %}high-risk{% elif result_data['cancer_risk']|float > 30 %}medium-risk{% else %}low-risk{% endif %}">
+              {{ result_data['cancer_risk'] }}%
+            </div>
+            {% if result_data['cancer_risk']|float > 70 %}
+            <span class="badge badge-danger">High Risk</span>
+            {% elif result_data['cancer_risk']|float > 30 %}
+            <span class="badge badge-warning">Medium Risk</span>
+            {% else %}
+            <span class="badge badge-success">Low Risk</span>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if result_data['cancer_risk']|float > 50 %}
+        <div class="alert alert-warning">
+          <strong>Recommendation:</strong> Please consult with your healthcare
+          provider for further evaluation and follow-up.
+        </div>
+        {% else %}
+        <div class="alert alert-success">
+          <strong>Good News:</strong> Low risk detected. Continue regular
+          screening as recommended by your physician.
+        </div>
+        {% endif %}
+      </div>
+      {% endif %} 
+      
+      {% if uploaded_image or processed_image %}
+      <div class="results-section">
+        <h2>
+          <span class="section-icon image-icon">🖼</span>
+          Image Analysis Comparison
+        </h2>
+
+        <div class="alert alert-info">
+          <strong>Image Processing:</strong> Compare the original image with
+          AI-enhanced analysis highlighting detected regions.
+        </div>
+
+        <div class="image-comparison-grid">
+          {% if uploaded_image %}
+          <div class="image-comparison-item">
+            <h3 class="image-title">Original Medical Image</h3>
+            <div class="image-container">
+              <img src="{{ uploaded_image }}" alt="Original medical image" />
+              <div class="image-overlay">
+                <strong>Original Image</strong><br />
+                Uploaded medical scan ready for AI analysis
+              </div>
+            </div>
+          </div>
+          {% endif %} 
+          
+          {% if processed_image %}
+          <div class="image-comparison-item">
+            <h3 class="image-title">AI-Enhanced Analysis</h3>
+            <div class="image-container">
+              <img src="{{ processed_image }}" alt="AI processed medical image" />
+              <div class="image-overlay">
+                <strong>AI-Processed Image</strong><br />
+                Enhanced visualization with detected regions highlighted
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <script>
+      // Initialize Typed.js
+      var typeData = new Typed(".role", {
+        strings: [" Detection ", " Analysis ", " Risk Assessment "],
+        loop: true,
+        typeSpeed: 100,
+        backSpeed: 80,
+        backDelay: 1000
+      });
+
+      // Enhanced file input handling
+      const fileInput = document.getElementById("fileInput");
+      const dropZone = document.querySelector(".file-drop-zone");
+      const analyzeBtn = document.querySelector(".analyze-btn");
+      const btnText = document.querySelector(".btn-text");
+      const form = document.querySelector("form");
+
+      // File selection handler
+      fileInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          dropZone.innerHTML = `
+            <div class="upload-icon">✓</div>
+            <div class="upload-text">File Selected Successfully</div>
+            <div class="upload-subtext">${file.name} • ${(file.size / 1024 / 1024).toFixed(2)}MB</div>
+          `;
+          dropZone.style.borderColor = "var(--accent-green)";
+          dropZone.style.background = "rgba(5, 150, 105, 0.05)";
+          analyzeBtn.classList.add("success");
+          btnText.textContent = "Analyze Medical Image";
+        }
+      });
+
+      // Drag and drop functionality
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ["dragenter", "dragover"].forEach((eventName) => {
+        dropZone.addEventListener(eventName, highlight, false);
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight(e) {
+        dropZone.style.borderColor = "var(--primary-blue)";
+        dropZone.style.background = "rgba(37, 99, 235, 0.05)";
+        dropZone.style.transform = "translateY(-2px)";
+      }
+
+      function unhighlight(e) {
+        dropZone.style.borderColor = "var(--gray-300)";
+        dropZone.style.background = "var(--gray-50)";
+        dropZone.style.transform = "translateY(0)";
+      }
+
+      dropZone.addEventListener("drop", handleDrop, false);
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        fileInput.files = files;
+
+        const changeEvent = new Event("change", { bubbles: true });
+        fileInput.dispatchEvent(changeEvent);
+      }
+
+      // Form submission with enhanced loading state
+      form.addEventListener("submit", function (e) {
+        if (!fileInput.files[0]) {
+          e.preventDefault();
+          alert("Please select a medical image file first.");
+          return;
+        }
+
+        analyzeBtn.classList.add("loading");
+        analyzeBtn.disabled = true;
+        btnText.innerHTML = '<span class="spinner"></span>Initializing Analysis...';
+
+        // Progressive loading messages
+        const loadingMessages = [
+          '<span class="spinner"></span>Processing Image...',
+          '<span class="spinner"></span>Running AI Detection...',
+          '<span class="spinner"></span>Analyzing Patterns...',
+          '<span class="spinner"></span>Calculating Risk Assessment...',
+          '<span class="spinner"></span>Generating Report...',
+        ];
+
+        let messageIndex = 0;
+        const messageInterval = setInterval(() => {
+          if (messageIndex < loadingMessages.length - 1) {
+            messageIndex++;
+            btnText.innerHTML = loadingMessages[messageIndex];
+          } else {
+            clearInterval(messageInterval);
+          }
+        }, 2000);
+      });
+
+      // Add smooth scrolling to results
+      function scrollToResults() {
+        const results = document.querySelector(".results-section");
+        if (results) {
+          results.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+
+      // Trigger scroll on page load if results exist
+      if (document.querySelector(".results-section")) {
+        setTimeout(scrollToResults, 800);
+      }
+
+      // Enhanced keyboard navigation
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && e.target === fileInput) {
+          fileInput.click();
+        }
+
+        // ESC to reset form
+        if (e.key === "Escape") {
+          resetForm();
+        }
+      });
+
+      // Reset form function
+      function resetForm() {
+        fileInput.value = "";
+        dropZone.innerHTML = `
+          <div class="upload-icon">📋</div>
+          <div class="upload-text">Drop your medical image here</div>
+          <div class="upload-subtext">or click to browse • JPG, PNG, DICOM supported • Max 10MB</div>
+        `;
+        dropZone.style.borderColor = "var(--gray-300)";
+        dropZone.style.background = "var(--gray-50)";
+        analyzeBtn.classList.remove("success", "loading");
+        analyzeBtn.disabled = false;
+        btnText.textContent = "Start Analysis";
+      }
+
+      // Add file validation feedback
+      function showValidationMessage(message, type = "error") {
+        const existingAlert = document.querySelector(".validation-alert");
+        if (existingAlert) {
+          existingAlert.remove();
+        }
+
+        const alert = document.createElement("div");
+        alert.className = `alert alert-${type === "error" ? "danger" : "success"} validation-alert`;
+        alert.innerHTML = `<strong>${type === "error" ? "Error:" : "Success:"}</strong> ${message}`;
+
+        const uploadArea = document.querySelector(".upload-area");
+        uploadArea.appendChild(alert);
+
+        setTimeout(() => {
+          alert.remove();
+        }, 5000);
+      }
+
+      // Enhanced file validation
+      fileInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // File size validation
+        if (file.size > 10 * 1024 * 1024) {
+          showValidationMessage(
+            "File size must be less than 10MB. Please compress your image or select a smaller file."
+          );
+          fileInput.value = "";
+          return;
+        }
+
+        // Update UI
+        dropZone.innerHTML = `
+          <div class="upload-icon">✅</div>
+          <div class="upload-text">File Ready for Analysis</div>
+          <div class="upload-subtext">${file.name} • ${(file.size / 1024 / 1024).toFixed(2)}MB • ${file.type || "DICOM"}</div>
+        `;
+        dropZone.style.borderColor = "var(--accent-green)";
+        dropZone.style.background = "rgba(5, 150, 105, 0.05)";
+        analyzeBtn.classList.add("success");
+        btnText.textContent = "Analyze Medical Image";
+      });
+
+      // Add result animation triggers
+      function animateResults() {
+        const metricCards = document.querySelectorAll(".metric-card");
+        metricCards.forEach((card, index) => {
+          setTimeout(() => {
+            card.style.transform = "translateY(0)";
+            card.style.opacity = "1";
+          }, index * 200);
+        });
+      }
+
+      // Initialize result animations if results exist
+      if (document.querySelector(".metric-card")) {
+        setTimeout(animateResults, 1000);
+      }
+
+      // Add hover effects for metric cards
+      document.querySelectorAll(".metric-card").forEach((card) => {
+        card.addEventListener("mouseenter", function () {
+          this.style.transform = "translateY(-4px) scale(1.02)";
+        });
+
+        card.addEventListener("mouseleave", function () {
+          this.style.transform = "translateY(-2px) scale(1)";
+        });
+      });
+
+      // Add image zoom functionality
+      document.querySelectorAll(".image-container img").forEach((img) => {
+        img.addEventListener("click", function () {
+          const modal = document.createElement("div");
+          modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+          `;
+
+          const modalImg = document.createElement("img");
+          modalImg.src = this.src;
+          modalImg.style.cssText = `
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-2xl);
+          `;
+
+          modal.appendChild(modalImg);
+          document.body.appendChild(modal);
+
+          modal.addEventListener("click", () => {
+            document.body.removeChild(modal);
+          });
+        });
+      });
+
+      // Add accessibility improvements
+      document.addEventListener("DOMContentLoaded", function () {
+        fileInput.setAttribute("aria-label", "Upload medical image for AI analysis");
+        analyzeBtn.setAttribute("aria-label", "Start AI analysis of uploaded medical image");
+
+        const shortcutsInfo = document.createElement("div");
+        shortcutsInfo.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: var(--gray-800);
+          color: var(--white);
+          padding: 12px 16px;
+          border-radius: var(--radius-lg);
+          font-size: 12px;
+          opacity: 0.7;
+          transition: opacity 0.3s ease;
+        `;
+        shortcutsInfo.innerHTML = "Press ESC to reset • Click images to zoom";
+        document.body.appendChild(shortcutsInfo);
+
+        shortcutsInfo.addEventListener("mouseenter", () => {
+          shortcutsInfo.style.opacity = "1";
+        });
+
+        shortcutsInfo.addEventListener("mouseleave", () => {
+          shortcutsInfo.style.opacity = "0.7";
+        });
+      });
+    </script>
+  </body>
+</html> --> -->
+ 
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI-Powered Polyp Detection & Cancer Risk Analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Doctor-friendly fonts: Nunito (UI) + JetBrains Mono (numbers) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <style>
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+      /* ═══════════════════════════════════════════════
+         DESIGN SYSTEM  —  Clinical Blue / Medical Teal
+         ═══════════════════════════════════════════════ */
+      :root {
+        /* ── Core brand ── */
+        --navy:          #0a1e38;
+        --navy-mid:      #0d2647;
+        --blue-deep:     #1251a3;
+        --blue-med:      #1a6fca;
+        --teal:          #0096b7;
+        --teal-bright:   #00b4d8;
+        --teal-glow:     rgba(0,180,216,0.2);
+
+        /* ── Status colours ── */
+        --green:         #0d9488;
+        --green-light:   #14b8a6;
+        --amber:         #b45309;
+        --amber-light:   #d97706;
+        --red:           #b91c1c;
+        --red-light:     #dc2626;
+
+        /* ── Neutrals ── */
+        --white:         #ffffff;
+        --surface:       #f4f8fd;       /* page background tint */
+        --card:          #ffffff;
+        --border-light:  #cfe0f0;
+        --border:        #b8d0e8;
+        --text-dark:     #0c1d30;
+        --text-base:     #1e3a52;
+        --text-muted:    #4a6d8c;
+        --text-faint:    #7a9ab8;
+
+        /* ── Dark panel (upload section) ── */
+        --panel-bg:      #0b1e34;
+        --panel-mid:     #0e2540;
+        --panel-border:  rgba(255,255,255,0.07);
+        --panel-muted:   #7090b0;
+        --gold:          #f0cf6a;
+        --gold-dim:      rgba(240,207,106,0.25);
+
+        /* ── Gradients ── */
+        --grad-primary:  linear-gradient(135deg, var(--blue-deep) 0%, var(--teal) 100%);
+        --grad-teal:     linear-gradient(135deg, var(--teal-bright), #0077a0);
+        --grad-green:    linear-gradient(135deg, var(--green), var(--green-light));
+        --grad-amber:    linear-gradient(135deg, var(--amber), var(--amber-light));
+        --grad-red:      linear-gradient(135deg, var(--red), var(--red-light));
+
+        /* ── Shadows ── */
+        --sh-xs:   0 1px 3px rgba(10,30,56,0.06);
+        --sh-sm:   0 2px 6px rgba(10,30,56,0.08);
+        --sh-md:   0 4px 16px rgba(10,30,56,0.10);
+        --sh-lg:   0 8px 28px rgba(10,30,56,0.13);
+        --sh-xl:   0 16px 48px rgba(10,30,56,0.16);
+        --sh-2xl:  0 24px 64px rgba(10,30,56,0.20);
+        --sh-panel:0 14px 52px rgba(0,0,0,0.45);
+
+        /* ── Radius ── */
+        --r-sm:  6px;
+        --r-md:  10px;
+        --r-lg:  14px;
+        --r-xl:  18px;
+        --r-2xl: 24px;
+        --r-3xl: 32px;
+      }
+
+      /* ═══════════ BASE ═══════════ */
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: 'Nunito', sans-serif;
+        /* background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1); */
+        background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+        min-height: 100vh;
+        color: var(--text-base);
+        overflow-x: hidden;
+        display: block;
+        padding: 44px 20px;
+        line-height: 1.65;
+        overflow-y: auto;
+      }
+
+      /* very subtle cross-hatch texture on page bg */
+      body::before {
+        content: '';
+        position: fixed; inset: 0; z-index: -1;
+        background-image:
+          radial-gradient(circle at 20% 20%, rgba(0,180,216,0.07) 1px, transparent 1px),
+          radial-gradient(circle at 80% 80%, rgba(100,180,255,0.05) 1px, transparent 1px);
+        background-size: 52px 52px, 38px 38px;
+        pointer-events: none;
+      }
+
+      /* ═══════════ OUTER CARD ═══════════ */
+      .container {
+        width: 150%; max-width: 1520px;
+        margin: 0 auto; background: linear-gradient(160deg, #0e3060 0%, #0c2a52 50%, #0f3366 100%);
+        border-radius: var(--r-3xl);
+        padding: 52px 52px 56px;
+        text-align: center;
+        box-shadow: var(--sh-2xl);
+        border: 1px solid rgba(0,180,216,0.18);
+        animation: cardIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
+        position: relative;
+      }
+
+      /* thick brand stripe at top */
+      .container::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 5px;
+        background: var(--grad-primary);
+        border-radius: var(--r-3xl) var(--r-3xl) 0 0;
+      }
+
+      @keyframes cardIn {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ═══════════ HEADER ═══════════ */
+      .header { margin-bottom: 44px; }
+
+      .medical-icon {
+        width: 100px; height: 100px;
+        background: var(--grad-primary);
+        border-radius: var(--r-xl);
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 22px;
+        box-shadow: 0 8px 24px rgba(7, 122, 88, 0.28);
+        position: relative;
+      }
+      .medical-icon::after { content: '🔬'; font-size: 40px; }
+
+      h1 {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 900;
+        font-size: clamp(45px, 6vw, 60px);
+        color: #ffe9e8;
+        letter-spacing: -0.03em;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+
+      .role {
+        background: linear-gradient(90deg, #5bc8f5, #00e5ff);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      }
+      .typed-cursor { color: #00e5ff; opacity: 0.9; }
+
+      .subtitle {
+        font-size: 25px;
+        font-weight: 600;
+        color: #0ae512;
+        max-width: 580px;
+        margin: 0 auto;
+        line-height: 1.7;
+      }
+      .dup-subtitle{
+        font-size: 30px;
+        font-weight: 700;
+      }
+
+      /* ═══════════════════════════════════════════
+         DARK UPLOAD PANEL
+         ═══════════════════════════════════════════ */
+      .dark-upload-panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: var(--r-2xl);
+        padding: 30px 34px 34px;
+        margin-bottom: 36px;
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--sh-panel);
+      }
+
+      /* dot-grid texture */
+      .dark-upload-panel::after {
+        content: '';
+        position: absolute; inset: 0; z-index: 0; pointer-events: none;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+        background-size: 24px 24px;
+      }
+
+      /* top teal accent */
+      .dark-upload-panel::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(90deg, var(--teal-bright), #0077a0);
+        z-index: 2;
+      }
+
+      .dark-upload-panel > * { position: relative; z-index: 1; }
+
+      /* ── Panel header row ── */
+      .dup-header {
+        display: flex; align-items: center; gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .dup-icon-box {
+        width: 58px; height: 58px; flex-shrink: 0;
+        background: var(--grad-teal);
+        border-radius: 20px;
+        display: grid; place-items: center;
+        font-size: 30px;
+        box-shadow: 0 0 20px rgba(0,180,216,0.38);
+      }
+
+      .dup-title {
+        font-size: 30px; font-weight: 800;
+        color: #ffffff; letter-spacing: -0.015em;
+        line-height: 2;
+      }
+      .dup-subtitle {
+        font-size: 15px; font-weight: 700;
+        color: var(--panel-muted); margin-top: 3px;
+        letter-spacing: 0.1px;
+      }
+
+      /* ── Warning notice ── */
+      .scan-only-notice {
+        display: flex; align-items: flex-start; gap: 12px;
+        background: rgba(240,207,106,0.07);
+        border: 1px solid rgba(240,207,106,0.22);
+        border-radius: var(--r-lg);
+        padding: 13px 17px;
+        margin-bottom: 18px;
+      }
+      .son-icon { font-size: 30px; flex-shrink: 0; margin-top: 2px; }
+      .scan-only-notice p { font-size: 20px; line-height: 2; color: #c8a85a; font-weight: 700; }
+      .scan-only-notice strong { color: var(--gold); font-weight: 700; }
+
+      /* ── Drop zone ── */
+      .dz-wrapper { position: relative; margin-bottom: 16px; }
+      .dz-wrapper input[type="file"] {
+        position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 3;
+        width: 120%; height: 120%;
+      }
+
+      .drop-zone-dark {
+        border: 2px dashed rgba(0,180,216,0.30);
+        border-radius: var(--r-xl);
+        padding: 40px 24px;
+        text-align: center;
+        background: rgba(0,180,216,0.025);
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      }
+      .drop-zone-dark:hover,
+      .drop-zone-dark.drag-over {
+        border-color: var(--teal-bright);
+        background: rgba(0,180,216,0.065);
+        transform: translateY(-2px);
+        box-shadow: 0 0 28px rgba(0,180,216,0.13);
+      }
+
+      .dz-circle {
+        width: 100px; height: 100px;
+        background: linear-gradient(135deg, rgba(0,180,216,0.16), rgba(0,180,216,0.05));
+        border: 1.5px solid rgba(0,180,216,0.27);
+        border-radius: 50%;
+        display: grid; place-items: center;
+        font-size: 34px; margin: 0 auto 16px;
+        transition: transform 0.3s ease;
+      }
+      .drop-zone-dark:hover .dz-circle { transform: scale(1.08) rotate(-5deg); }
+
+      .dz-label {
+        font-size: 30px; font-weight: 700;
+        color: #ffffff; margin-bottom: 8px;
+        letter-spacing: -0.01em;
+      }
+      .dz-formats {
+        font-size: 20px; color: var(--panel-muted);
+        font-family: 'JetBrains Mono', monospace;
+        margin-bottom: 18px; letter-spacing: 0.4px;
+      }
+      .dz-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 7px; }
+      .dz-tag {
+        background: rgba(240,207,106,0.09);
+        border: 1px solid var(--gold-dim);
+        color: var(--gold);
+        padding: 3.5px 12px; border-radius: 999px;
+        font-size: 20px; font-weight: 800;
+        letter-spacing: 1px; text-transform: uppercase;
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      /* ── Validation error ── */
+      .val-error-box {
+        display: none;
+        background: rgba(185,28,28,0.08);
+        border: 1px solid rgba(185,28,28,0.28);
+        border-radius: var(--r-md);
+        padding: 10px 15px;
+        font-size: 14px; color: #f4a0a0; font-weight: 500;
+        margin-bottom: 14px; gap: 9px; align-items: center;
+      }
+      .val-error-box.show { display: flex; animation: fadeUp 0.3s ease; }
+
+      /* ── Teal CTA button ── */
+      .analyze-btn-teal {
+        width: 100%;
+        background: var(--grad-teal);
+        border: none; border-radius: var(--r-xl);
+        padding: 16px 48px; color: #fff;
+        font-family: 'Nunito', sans-serif;
+        font-size: 30px; font-weight: 900;
+        cursor: pointer; letter-spacing: 0.2px;
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        box-shadow: 0 8px 26px rgba(0,180,216,0.30);
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        position: relative; overflow: hidden;
+      }
+      .analyze-btn-teal::before {
+        content: '';
+        position: absolute; inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.13), transparent);
+        opacity: 0; transition: opacity 0.3s;
+      }
+      .analyze-btn-teal:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 38px rgba(0,180,216,0.44);
+      }
+      .analyze-btn-teal:hover::before { opacity: 1; }
+      .analyze-btn-teal:active { transform: translateY(0); }
+      .analyze-btn-teal.loading {
+        background: rgba(255,255,255,0.07); pointer-events: none;
+        box-shadow: none; color: rgba(255,255,255,0.45);
+      }
+      .analyze-btn-teal.ready {
+        background: linear-gradient(135deg, var(--green), #107f72);
+        box-shadow: 0 8px 26px rgba(13,148,136,0.32);
+      }
+
+      /* spinner */
+      .spinner {
+        display: inline-block; width: 16px; height: 16px;
+        border: 2px solid rgba(255,255,255,0.28); border-top-color: #fff;
+        border-radius: 50%; animation: spin 0.85s linear infinite;
+      }
+      @keyframes spin   { to { transform: rotate(360deg); } }
+      @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+      /* ═══════════════════════════════════════
+         RESULTS — clean clinical card style
+         ═══════════════════════════════════════ */
+      .results-section {
+        background: linear-gradient(160deg, #0d2d58 0%, #0b2850 100%);
+        border: 1px solid rgba(0,180,216,0.15);
+        padding: 30px 32px;
+        margin: 22px 0;
+        animation: fadeUp 0.55s ease-out both;
+        box-shadow: var(--sh-md);
+        text-align: left;
+      }
+      .results-section:nth-child(2) { animation-delay: 0.08s; }
+      .results-section:nth-child(3) { animation-delay: 0.16s; }
+      .results-section:nth-child(4) { animation-delay: 0.24s; }
+
+      /* left accent bar on each results card */
+      .results-section::before {
+        content: '';
+        position: absolute; top: 18px; bottom: 18px; left: 0; width: 4px;
+        background: var(--grad-primary);
+        border-radius: 0 4px 4px 0;
+      }
+      .results-section { position: relative; border-radius: var(--r-2xl); }
+
+      h2 {
+        font-family: 'Nunito', sans-serif;
+        font-size: 30px; font-weight: 800;
+        margin-bottom: 20px;
+        color: #d8efff;
+        display: flex; align-items: center; gap: 12px;
+        letter-spacing: -0.01em;
+      }
+
+      .section-icon {
+        width: 44px; height: 44px;
+        border-radius: var(--r-md);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 25px; color: var(--white);
+        flex-shrink: 0;
+      }
+      .status-icon  { background: var(--grad-green); }
+      .results-icon { background: var(--grad-primary); }
+      .image-icon   { background: var(--grad-teal); }
+
+      /* ── Metric cards ── */
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+        gap: 18px; margin-top: 20px;
+      }
+
+      .metric-card {
+        background: linear-gradient(145deg, #0e2f5e 0%, #112f5a 100%);
+        border-radius: var(--r-xl);
+        padding: 22px 20px;
+        border: 1px solid rgba(0,180,216,0.18);
+        transition: all 0.28s ease;
+        text-align: center;
+        position: relative; overflow: hidden;
+      }
+      /* top-edge colour stripe per card */
+      .metric-card::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: var(--grad-primary);
+        border-radius: var(--r-xl) var(--r-xl) 0 0;
+      }
+      .metric-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--sh-lg);
+        background: linear-gradient(145deg, #143670 0%, #1a3d7a 100%);
+        border-color: var(--border);
+      }
+
+      .metric-label {
+        font-size: 13px; font-weight: 700;
+        color: #1bb512;
+        text-transform: uppercase; letter-spacing: 1px;
+        margin-bottom: 12px;
+      }
+      .metric-value {
+        font-size: 42px; font-weight: 800;
+        color: #e1ffe0;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        margin-bottom: 10px;
+      }
+      .metric-value.high-risk   { color: var(--red); }
+      .metric-value.medium-risk { color: var(--amber-light); }
+      .metric-value.low-risk    { color: var(--green); }
+
+      /* ── Badges ── */
+      .badge {
+        display: inline-flex; align-items: center;
+        padding: 4px 12px; border-radius: 999px;
+        font-size: 20px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: 0.6px;
+        font-family: 'Nunito', sans-serif;
+      }
+      .badge-success { background: var(--grad-green);  color: var(--white); }
+      .badge-warning { background: var(--grad-amber);  color: var(--white); }
+      .badge-danger  { background: var(--grad-red);    color: var(--white); }
+      .badge-info    { background: var(--grad-primary); color: var(--white); }
+
+      /* ── Alert boxes ── */
+      .alert {
+        padding: 13px 18px;
+        border-radius: var(--r-lg);
+        border: 1px solid;
+        margin: 14px 0;
+        display: flex; align-items: flex-start; gap: 11px;
+        font-size: 20px; font-weight: 500; line-height: 1.6;
+      }
+      .alert strong { font-weight: 800; }
+
+      .alert-success {
+        background: rgba(13,148,136,0.15); border-color: rgba(20,184,166,0.4); color: #5eead4;
+      }
+      .alert-warning {
+        background: rgba(180,83,9,0.15); border-color: rgba(217,119,6,0.4); color: #fbbf24;
+      }
+      .alert-danger {
+        background: rgba(185,28,28,0.15); border-color: rgba(220,38,38,0.4); color: #fca5a5;
+      }
+      .alert-info {
+        background: rgba(18,81,163,0.25); border-color: rgba(0,180,216,0.35); color: #f8b07d;
+      }
+
+      /* ── Progress bar ── */
+      .progress-container {
+        width: 100%; height: 6px;
+        background: rgba(0,180,216,0.12);
+        border-radius: 999px; overflow: hidden; margin: 14px 0;
+      }
+      .progress-bar {
+        height: 100%; background: var(--grad-primary);
+        border-radius: 999px;
+        animation: progressPulse 2s ease-in-out infinite;
+      }
+      @keyframes progressPulse { 0%,100%{opacity:1;} 50%{opacity:0.65;} }
+
+      /* ── Status text ── */
+      .status-text {
+        font-size: 20px; font-weight: 500;
+        color: #b8f5b9;
+        padding: 16px 20px;
+        background: rgba(0,100,160,0.25);
+        border-radius: var(--r-lg);
+        border-left: 4px solid var(--teal);
+        border-top: 1px solid rgba(0,180,216,0.2);
+        border-right: 1px solid rgba(0,180,216,0.2);
+        border-bottom: 1px solid rgba(0,180,216,0.2);
+        line-height: 1.65;
+      }
+
+      /* ── Reference note ── */
+      .reference-note {
+        background: rgba(0,80,140,0.3);
+        padding: 14px 18px;
+        border-radius: var(--r-lg);
+        font-size: 20px; color: #7ab8d8; font-weight: 500;
+        margin-top: 20px;
+        border: 1px solid rgba(0,180,216,0.18);
+        display: flex; gap: 12px; align-items: flex-start;
+        line-height: 1.7;
+      }
+      .reference-note strong { color: #c8e8ff; font-weight: 700; }
+      .reference-note a {
+        color: #5bc8f5; text-decoration: none; font-weight: 700;
+        border-bottom: 1px solid rgba(91,200,245,0.3);
+      }
+      .reference-note a:hover { color: #26ff00; border-bottom-color: #00e5ff; }
+
+      /* ── Image comparison ── */
+      .image-comparison-grid {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 24px; margin-top: 20px;
+      }
+      .image-title {
+        font-size: 20px; font-weight: 800;
+        color: #a8d8f0;
+        margin-bottom: 12px; text-align: center;
+        padding: 9px 16px;
+        background: rgba(16, 140, 0, 0.4);
+        border-radius: var(--r-lg);
+        border: 1px solid rgba(0,180,216,0.2);
+        text-transform: uppercase; letter-spacing: 0.5px;
+      }
+      .image-container {
+        position: relative; border-radius: var(--r-xl);
+        overflow: hidden; box-shadow: var(--sh-lg);
+        border: 1px solid rgba(0,180,216,0.2); cursor: zoom-in;
+      }
+      .image-container img {
+        width: 100%; height: auto; display: block;
+        transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+      }
+      .image-container:hover img { transform: scale(1.025); }
+      .image-overlay {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: linear-gradient(transparent, rgba(10,30,56,0.82));
+        padding: 20px; color: #fff;
+        transform: translateY(100%); transition: transform 0.3s ease;
+        font-size: 13px; font-weight: 500;
+      }
+      .image-container:hover .image-overlay { transform: translateY(0); }
+
+      /* ── Image modal ── */
+      .img-modal {
+        position: fixed; inset: 0; z-index: 200;
+        background: rgba(5, 30, 6, 0.92);
+        display: none; place-items: center;
+        cursor: zoom-out; backdrop-filter: blur(8px);
+      }
+      .img-modal.open { display: grid; animation: fadeUp 0.2s ease; }
+      .img-modal img {
+        max-width: 90vw; max-height: 88vh;
+        border-radius: var(--r-2xl);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.65);
+      }
+
+      /* ── Keyboard hint ── */
+      .kb-hint {
+        position: fixed; bottom: 20px; right: 20px;
+        background: var(--navy);
+        color: rgba(255,255,255,0.75);
+        padding: 10px 16px; border-radius: var(--r-lg);
+        font-size: 20px; font-weight: 600;
+        opacity: 0.75; transition: opacity 0.3s; z-index: 50;
+        border: 1px solid rgba(255,255,255,0.1);
+        letter-spacing: 0.1px;
+      }
+      .kb-hint:hover { opacity: 1; }
+
+      /* ═══════════ RESPONSIVE ═══════════ */
+      @media (max-width: 768px) {
+        .container { padding: 32px 22px 36px; }
+        h1 { font-size: 30px; }
+        .dark-upload-panel { padding: 24px 18px 26px; }
+        .metric-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+        .image-comparison-grid { grid-template-columns: 1fr; gap: 20px; }
+        .analyze-btn-teal { padding: 15px; }
+        h2 { font-size: 17px; }
+      }
+      @media (max-width: 480px) {
+        .container { padding: 24px 16px 28px; }
+        .metric-grid { grid-template-columns: 1fr; }
+        .subtitle { font-size: 15px; }
+        .metric-value { font-size: 28px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      @media print {
+        body { background: white; }
+        .container { box-shadow: none; border: 1px solid var(--border); }
+        .dark-upload-panel, .kb-hint { display: none; }
+      }
+      .aapa{
+  color:#59ff00;
+  font-weight:800;
+}
+.bapa{
+  color:#0ae512;
+}
+.tapa{
+  color:#0ae512;
+}
+.bapu{
+  color:#0ae512
+}
+      .reference-note a {
+  color: #2bff00;
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,215,0,0.4);
+}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+      <!-- ── HEADER ── -->
+      <div class="header">
+        <div class="medical-icon"></div>
+        <h1>AI Polyp <span class="role"></span></h1>
+        <p class="subtitle">
+          Advanced medical imaging analysis powered by machine learning for
+          accurate polyp detection and cancer risk assessment
+        </p>
+      </div>
+
+      <!-- ════════════════════════════════════════════════
+           DARK UPLOAD PANEL
+           ════════════════════════════════════════════════ -->
+      <form method="post" enctype="multipart/form-data" id="mainForm">
+        <div class="dark-upload-panel">
+
+          <!-- Header row: icon + title -->
+          <div class="dup-header">
+            <div class="dup-icon-box">🩺</div>
+            <div>
+              <div class="dup-title">Upload Medical Scan</div>
+              <div class="dup-subtitle">Colonoscopy · Endoscopy · Gastroscopy imaging</div>
+            </div>
+          </div>
+
+          <!-- Warning notice -->
+          <div class="scan-only-notice">
+            <span class="son-icon">⚠️</span>
+            <p>
+              <strong>Medical Scans Only:</strong> This system is designed exclusively for
+              colonoscopy, endoscopy, and gastroscopy scan images. Please do not upload
+              regular photographs, selfies, or non-medical images — results will be
+              invalid and meaningless. Accepted formats:
+              <strong>DICOM, JPG, PNG, TIFF</strong> of scanned imagery only.
+            </p>
+          </div>
+
+          <!-- Drop zone -->
+          <div class="dz-wrapper">
+            <input
+              type="file"
+              name="file"
+              id="fileInput"
+              accept=".jpg,.jpeg,.png,.tiff,.tif,.dcm,.dicom,.bmp"
+              required
+              aria-label="Upload medical scan image"
+            />
+            <div class="drop-zone-dark" id="dropZone">
+              <div class="dz-circle" id="dzIcon">🩻</div>
+              <div class="dz-label"   id="dzTitle">Drop your scan here or click to browse</div>
+              <div class="dz-formats" id="dzSub">DICOM &nbsp;·&nbsp; JPG &nbsp;·&nbsp; PNG &nbsp;·&nbsp; TIFF &nbsp;|&nbsp; Max 10 MB</div>
+              <div class="dz-tags">
+                <span class="dz-tag">Colonoscopy</span>
+                <span class="dz-tag">Endoscopy</span>
+                <span class="dz-tag">Gastroscopy</span>
+                <span class="dz-tag">DICOM</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Validation error -->
+          <div class="val-error-box" id="valError">
+            <span>🚫</span>
+            <span id="valMsg">Please select a valid medical scan image.</span>
+          </div>
+
+          <!-- CTA button -->
+          <button type="submit" class="analyze-btn-teal" id="submitBtn">
+            <span id="btnContent">🔍&nbsp;&nbsp;Begin AI Analysis</span>
+          </button>
+
+        </div>
+      </form>
+      
+     <img id="vitLogo" src="/static/image.png" style="display:none;">
+      <!-- ════════════════════════════════
+           RESULTS
+           ════════════════════════════════ -->
+
+      {% if result %}
+      <div class="results-section">
+        <h2>
+          <span class="section-icon status-icon">✓</span>
+          Analysis Status
+        </h2>
+        <div class="status-text">{{ result }}</div>
+        <div class="progress-container">
+          <div class="progress-bar" style="width: 100%"></div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if result_data %}
+      <div class="results-section">
+        <h2>
+          <span class="section-icon results-icon">📊</span>
+          Diagnostic Results
+        </h2>
+
+        <div class="alert alert-info">
+          <strong>Analysis Complete:</strong> AI has processed your medical image with high confidence.
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-label">Polyp Detection Confidence</div>
+            <div class="metric-value">{{ result_data['polyp_chance'] }}%</div>
+            {% if result_data['polyp_chance']|int > 80 %}
+            <span class="badge badge-danger">High Confidence</span>
+            {% elif result_data['polyp_chance']|int > 50 %}
+            <span class="badge badge-warning">Medium Confidence</span>
+            {% else %}
+            <span class="badge badge-success">Low Detection</span>
+            {% endif %}
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Estimated Size</div>
+            <div class="metric-value">{{ result_data['polyp_length_mm'] }}mm</div>
+            {% if result_data['polyp_length_mm']|int > 10 %}
+            <span class="badge badge-warning">Large</span>
+            {% elif result_data['polyp_length_mm']|int > 5 %}
+            <span class="badge badge-info">Medium</span>
+            {% else %}
+            <span class="badge badge-success">Small</span>
+            {% endif %}
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Cancer Risk Assessment</div>
+            <div class="metric-value {% if result_data['cancer_risk']|int > 70 %}high-risk{% elif result_data['cancer_risk']|int > 30 %}medium-risk{% else %}low-risk{% endif %}">
+              {{ result_data['cancer_risk'] }}%
+            </div>
+            {% if result_data['cancer_risk']|int > 70 %}
+            <span class="badge badge-danger">High Risk</span>
+            {% elif result_data['cancer_risk']|int > 30 %}
+            <span class="badge badge-warning">Medium Risk</span>
+            {% else %}
+            <span class="badge badge-success">Low Risk</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="reference-note" style="margin-top: 24px;">
+          <span style="font-size: 20px;">ℹ️</span>
+          <p>
+            <strong class="aapa">Methodology:</strong> Cancer risk detection is calculated based on the polyp area detected within a standardized <strong>256×256 pixel</strong> analysis frame.<br/>
+Data Reference:
+            <a href="https://www.medicalnewstoday.com/articles/colon-polyp-size-and-cancer-risk"
+               target="_blank" rel="noopener noreferrer">Medical News Today: Colon Polyp Size and Cancer Risk</a>.
+          </p>
+        </div>
+
+        {% if result_data['cancer_risk']|int > 50 %}
+        <div class="alert alert-warning">
+          <strong class="bapa">Recommendation:</strong> Please consult with your healthcare provider for further evaluation and follow-up.
+        </div>
+        {% else %}
+        <div class="alert alert-success">
+          <strong class="tapa">Good News:</strong> Low risk detected. Continue regular screening as recommended by your physician.
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% if uploaded_image or processed_image %}
+      <div class="results-section">
+        <h2>
+          <span class="section-icon image-icon">🖼</span>
+          Image Analysis Comparison
+        </h2>
+
+        <div class="alert alert-info">
+          <strong class="bapu">Image Processing: </strong> Compare the original image with AI-enhanced analysis highlighting detected regions.
+        </div>
+
+        <div class="image-comparison-grid">
+          {% if uploaded_image %}
+          <div class="image-comparison-item">
+            <h3 class="image-title">Original Medical Image</h3>
+            <div class="image-container" data-src="{{ uploaded_image }}">
+              <img src="{{ uploaded_image }}" alt="Original medical image"/>
+              <div class="image-overlay">
+                <strong>Original Image</strong><br/>Uploaded medical scan ready for AI analysis
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if processed_image %}
+          <div class="image-comparison-item">
+            <h3 class="image-title">AI-Enhanced Analysis</h3>
+            <div class="image-container" data-src="{{ processed_image }}">
+              <img src="{{ processed_image }}" alt="AI processed medical image"/>
+              <div class="image-overlay">
+                <strong>AI-Processed Image</strong><br/>Enhanced visualization with detected regions highlighted
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if result_data %}
+<div style="margin-top:30px;text-align:center;">
+
+<button onclick="downloadReport()" 
+style="
+background:linear-gradient(135deg,#0d9488,#14b8a6);
+border:none;
+padding:16px 32px;
+color:white;
+font-size:20px;
+font-weight:500;
+border-radius:12px;
+cursor:pointer;
+box-shadow:0 6px 20px rgba(0,0,0,0.5);
+">
+⬇ Download Full AI Report
+</button>
+
+</div>
+{% endif %}
+
+    </div><!-- /container -->
+
+    <div class="kb-hint" id="kbHint">Press ESC to reset &nbsp;·&nbsp; Click images to zoom</div>
+
+    <div class="img-modal" id="imgModal">
+      <img id="modalImg" src="" alt="Enlarged scan"/>
+    </div>
+
+    <!-- ════════════ SCRIPTS (unchanged logic) ════════════ -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+      /* ── Typed.js ── */
+      new Typed('.role', {
+        strings: ['Detection', 'Cancer Screening', 'Tissue Analysis', 'AI Diagnostics'],
+        loop: true, typeSpeed: 95, backSpeed: 65, backDelay: 1500,
+      });
+
+      /* ── Elements ── */
+      const fileInput  = document.getElementById('fileInput');
+      const dropZone   = document.getElementById('dropZone');
+      const dzIcon     = document.getElementById('dzIcon');
+      const dzTitle    = document.getElementById('dzTitle');
+      const dzSub      = document.getElementById('dzSub');
+      const submitBtn  = document.getElementById('submitBtn');
+      const btnContent = document.getElementById('btnContent');
+      const mainForm   = document.getElementById('mainForm');
+      const valError   = document.getElementById('valError');
+      const valMsg     = document.getElementById('valMsg');
+
+      const ALLOWED    = ['jpg','jpeg','png','tiff','tif','dcm','dicom','bmp'];
+      const SUSPICIOUS = ['selfie','photo','camera','screenshot','img_','dsc_','whatsapp','pic_'];
+
+      function showError(msg) {
+        valMsg.textContent = msg;
+        valError.classList.add('show');
+        setTimeout(() => valError.classList.remove('show'), 5500);
+      }
+
+      function validateFile(file) {
+        if (!file) return false;
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!ALLOWED.includes(ext)) {
+          showError(`".${ext}" is not a supported format. Please upload a colonoscopy/endoscopy scan (JPG, PNG, TIFF or DICOM).`);
+          return false;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          showError('File exceeds 10 MB. Please select a smaller scan file.');
+          return false;
+        }
+        if (SUSPICIOUS.some(k => file.name.toLowerCase().includes(k))) {
+          showError('This appears to be a regular photograph. Please upload a medical scan only.');
+          return false;
+        }
+        return true;
+      }
+
+      function applySelected(file) {
+        dzIcon.textContent  = '✅';
+        dzTitle.textContent = 'Scan ready for analysis';
+        dzSub.textContent   = `${file.name}  ·  ${(file.size/1024/1024).toFixed(2)} MB`;
+        dropZone.style.borderColor = '#0d9488';
+        dropZone.style.background  = 'rgba(13,148,136,0.07)';
+        submitBtn.classList.add('ready');
+        btnContent.innerHTML = '🔍&nbsp;&nbsp;Analyse Medical Scan';
+        valError.classList.remove('show');
+      }
+
+      function resetDropZone() {
+        dzIcon.textContent  = '🩻';
+        dzTitle.textContent = 'Drop your scan here or click to browse';
+        dzSub.textContent   = 'DICOM · JPG · PNG · TIFF  |  Max 10 MB';
+        dropZone.style.borderColor = '';
+        dropZone.style.background  = '';
+        submitBtn.classList.remove('ready','loading');
+        submitBtn.disabled = false;
+        btnContent.innerHTML = '🔍&nbsp;&nbsp;Begin AI Analysis';
+      }
+
+      fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (validateFile(file)) applySelected(file);
+        else { fileInput.value = ''; resetDropZone(); }
+      });
+
+      ['dragenter','dragover','dragleave','drop'].forEach(ev =>
+        dropZone.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); })
+      );
+      ['dragenter','dragover'].forEach(ev =>
+        dropZone.addEventListener(ev, () => dropZone.classList.add('drag-over'))
+      );
+      ['dragleave','drop'].forEach(ev =>
+        dropZone.addEventListener(ev, () => dropZone.classList.remove('drag-over'))
+      );
+      dropZone.addEventListener('drop', function(e) {
+        const files = e.dataTransfer.files;
+        if (files.length) {
+          fileInput.files = files;
+          if (validateFile(files[0])) applySelected(files[0]);
+        }
+      });
+
+      let progressInterval;
+      mainForm.addEventListener('submit', function(e) {
+        if (!fileInput.files[0]) {
+          e.preventDefault();
+          showError('Please select a medical scan image before starting analysis.');
+          return;
+        }
+        if (!validateFile(fileInput.files[0])) { e.preventDefault(); return; }
+        submitBtn.classList.add('loading'); submitBtn.classList.remove('ready');
+        submitBtn.disabled = true;
+        const msgs = [
+          '<span class="spinner"></span>&nbsp; Processing Image...',
+          '<span class="spinner"></span>&nbsp; Running AI Detection...',
+          '<span class="spinner"></span>&nbsp; Analysing Tissue Patterns...',
+          '<span class="spinner"></span>&nbsp; Calculating Risk Assessment...',
+          '<span class="spinner"></span>&nbsp; Generating Clinical Report...',
+        ];
+        let i = 0; btnContent.innerHTML = msgs[0];
+        progressInterval = setInterval(() => {
+          if (i < msgs.length-1) { i++; btnContent.innerHTML = msgs[i]; }
+          else clearInterval(progressInterval);
+        }, 2200);
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          if (imgModal.classList.contains('open')) closeModal();
+          else { fileInput.value = ''; resetDropZone(); }
+        }
+      });
+
+      const imgModal = document.getElementById('imgModal');
+      const modalImg = document.getElementById('modalImg');
+      document.querySelectorAll('.image-container').forEach(c => {
+        c.addEventListener('click', () => {
+          modalImg.src = c.dataset.src || c.querySelector('img').src;
+          imgModal.classList.add('open');
+        });
+      });
+      function closeModal() { imgModal.classList.remove('open'); modalImg.src = ''; }
+      imgModal.addEventListener('click', closeModal);
+
+      if (document.querySelector('.results-section')) {
+        setTimeout(() => {
+          document.querySelector('.results-section').scrollIntoView({ behavior:'smooth', block:'start' });
+        }, 700);
+      }
+
+      document.querySelectorAll('.metric-card').forEach(card => {
+        card.addEventListener('mouseenter', function() { this.style.transform = 'translateY(-4px) scale(1.02)'; });
+        card.addEventListener('mouseleave', function() { this.style.transform = ''; });
+      });
+
+      const kbHint = document.getElementById('kbHint');
+      setTimeout(() => { kbHint.style.opacity = '0'; }, 6000);
+      kbHint.addEventListener('mouseenter', () => kbHint.style.opacity = '1');
+      kbHint.addEventListener('mouseleave', () => kbHint.style.opacity = '0.4');
+
+      window.addEventListener('beforeunload', () => { if (progressInterval) clearInterval(progressInterval); });
+
+      function downloadReport() {
+
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+
+const polypChance = "{{ result_data['polyp_chance'] }}";
+const polypSize = "{{ result_data['polyp_length_mm'] }}";
+const cancerRisk = "{{ result_data['cancer_risk'] }}";
+
+let originalImg = document.querySelector("img[alt='Original medical image']");
+let processedImg = document.querySelector("img[alt='AI processed medical image']");
+
+let reportId = "AI-" + Math.floor(Math.random()*100000);
+let date = new Date().toLocaleDateString();
+
+let riskLevel = "Low";
+if(cancerRisk > 70){ riskLevel="High"; }
+else if(cancerRisk > 30){ riskLevel="Medium"; }
+
+// ================= HEADER =================
+doc.setFillColor(10,30,56);
+doc.rect(0,0,210,25,"F");
+
+doc.setTextColor(255,255,255);
+doc.setFont("helvetica","bold");
+doc.setFontSize(20);
+doc.text("AI POLYP DETECTION REPORT",105,15,null,null,"center");
+
+// ================= REPORT INFO =================
+doc.setFont("helvetica","normal");
+doc.setTextColor(60,60,60);
+doc.setFontSize(11);
+
+doc.text("Report ID: "+reportId,20,35);
+doc.text("Generated Date: "+date,20,42);
+
+// Divider
+doc.setDrawColor(0,150,200);
+doc.line(20,48,190,48);
+
+// ================= SCAN INFORMATION =================
+doc.setFont("helvetica","bold");
+doc.setTextColor(0,102,153);
+doc.setFontSize(15);
+doc.text("Scan Information",20,60);
+
+doc.setFont("helvetica","normal");
+doc.setTextColor(40,40,40);
+doc.setFontSize(11);
+
+doc.text("Scan Type: Colonoscopy Image",20,70);
+doc.text("Image Resolution: 256 x 256 pixels",20,76);
+doc.text("AI Model Version: v1.0",20,82);
+
+// ================= DIAGNOSTIC RESULTS =================
+doc.setFont("helvetica","bold");
+doc.setTextColor(0,102,153);
+doc.setFontSize(15);
+doc.text("Diagnostic Results",20,100);
+
+doc.setFont("helvetica","normal");
+doc.setTextColor(30,30,30);
+doc.setFontSize(12);
+
+doc.text("Polyp Detection Confidence: "+polypChance+"%",20,110);
+doc.text("Estimated Polyp Size: "+polypSize+" mm",20,118);
+doc.text("Cancer Risk Assessment: "+cancerRisk+"%",20,126);
+
+// Risk Level Highlight
+doc.setFont("helvetica","bold");
+
+if(riskLevel === "High"){
+doc.setTextColor(200,0,0);
+}
+else if(riskLevel === "Medium"){
+doc.setTextColor(230,140,0);
+}
+else{
+doc.setTextColor(0,150,80);
+}
+
+doc.text("Risk Level: "+riskLevel,20,134);
+
+// ================= IMAGE ANALYSIS =================
+doc.setFont("helvetica","bold");
+doc.setTextColor(0,102,153);
+doc.setFontSize(15);
+doc.text("Image Analysis",20,148);
+
+doc.setFont("helvetica","normal");
+doc.setTextColor(40,40,40);
+
+if(originalImg){
+doc.setFontSize(14,"bold");
+doc.text("Original Scan",20,160);
+doc.addImage(originalImg.src,"PNG",20,165,75,70);
+}
+
+if(processedImg){
+doc.text("AI Analysis with Detected Polyp Region",115,160);
+doc.addImage(processedImg.src,"PNG",115,165,75,70);
+}
+
+// ================= CLINICAL RECOMMENDATION =================
+doc.setFont("helvetica","bold");
+doc.setTextColor(0,102,153);
+doc.setFontSize(15);
+doc.text("Clinical Recommendation",20,245);
+
+doc.setFont("helvetica","normal");
+doc.setTextColor(40,40,40);
+doc.setFontSize(11);
+
+doc.text("- Consult a healthcare professional for confirmation.",20,252);
+doc.text("- Follow regular screening schedule.",20,257);
+doc.text("- Further diagnostic testing may be required.",20,262);
+
+// ================= DISCLAIMER =================
+doc.setFillColor(255,245,235);
+doc.rect(20,267,170,14,"F");
+
+doc.setTextColor(120,60,0);
+doc.setFont("helvetica","bold");
+doc.setFontSize(10);
+doc.text("Medical Disclaimer:",22,272);
+
+doc.setFont("helvetica","normal");
+doc.setFontSize(9);
+doc.text("AI predictions may contain errors. Always consult a medical professional.",22,277);
+
+// ================= CREDIT =================
+doc.setTextColor(90,90,90);
+doc.setFont("helvetica","italic");
+doc.setFontSize(10);
+
+doc.text("Made with love by Prince Pradhan",105,288,null,null,"center");
+
+// ================= FOOTER =================
+doc.setTextColor(150);
+doc.setFont("helvetica","normal");
+doc.setFontSize(9);
+
+doc.text(
+"AI Assisted Medical Imaging Report | Generated for research and screening support",
+105,
+293,
+null,
+null,
+"center"
+);
+
+// Save PDF
+doc.save("AI_Polyp_Detection_Report.pdf");
+
+}
+
+    </script>
+  </body>
+</html>
