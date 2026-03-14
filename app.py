@@ -1319,11 +1319,14 @@ import time  # <--- NEW IMPORT
 app = Flask(__name__)
 
 # ----------------- Folders -----------------
-UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
-LOGS_FOLDER = os.path.join(app.root_path, 'static', 'logs')
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(LOGS_FOLDER, exist_ok=True)
+UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads")
+LOGS_FOLDER = os.path.join(app.root_path, "static", "logs")
 
+if not os.path.isdir(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+if not os.path.isdir(LOGS_FOLDER):
+    os.makedirs(LOGS_FOLDER)
 # ----------------- Load Model -----------------
 MODEL_PATH = os.path.join("projects", "model5.h5")
 # Use compile=False if custom metrics are not needed
